@@ -8,18 +8,6 @@ import (
 	"github.com/bruh-boys/courses_platform/src/core"
 )
 
-/*
-CREATE TABLE users(
-    ID iNTEGER PRIMARY KEY,
-    privileges INT NOT NULL,--1:admin,2:teacher,3:pupil
-    username VARCHAR(64) NOT NULL UNIQUE,--es innecesario tener mas
-    pass VARCHAR(64) NOT NULL,--sha256(password+token)
-    token INTEGER NOT NULL , --tiempo de registro+numero aleatorio // solo se puede usar para el momento de entrar al a cuenta, no es algo que sirva de mucho
-    email VARCHAR(64) NOT NULL UNIQUE, --deberia de encriptar esto pero posiblemente en caso de que se les
-    ssid VARCHAR(64), --sha256(password+email+id+token+unix-time)
-    pfp TEXT-- solo es una url
-);
-*/
 // el error seria en caso de que el correo se repitiera o algo parecido
 func SignUp(sUp core.SignUp) (err error) {
 	db := openDB()

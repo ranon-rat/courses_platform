@@ -7,25 +7,7 @@ import (
 	"github.com/bruh-boys/courses_platform/src/core"
 )
 
-/*
--- sqlite
--- el admin puede agregar a profesores y a nuevos admins
--- pero debe de agregarse manualmente
--- con esto tambien se puede guardar los comentarios
-CREATE TABLE publications(
-    ID INTEGER PRIMARY KEY,
-    title TEXT NOT NULL,
-    mineature TEXT NOT NULL,--url de un servicio de hosting
-    content TEXT NOT NULL,--con esto solo guardare el contenido en texto
-    author INTEGER NOT NULL,-- solo usare el id del usuario que publico esto para poder cargar algunas cosas,
-    -- en si solo es importante ver lo que son las publicaciones asi que con esto solo se debe de checar
-    -- las publicaciones que tengan el id de un admin
-    topic VARCHAR(64),--no croe usar mar de esta cantidad de caracteres , de hecho me parece demasiado pero puede que tenga la necesidad
-    datePublication integer--tal vez lo vaya a cambiar
-);
-
-*/
-//los posts solo lo pueden hacer maestros o administradores
+// los posts solo lo pueden hacer maestros o administradores
 func NewPost(post core.ApiPostPublication, id int) {
 	db := openDB()
 	defer db.Close()

@@ -11,7 +11,7 @@ CREATE TABLE publications(
     -- en si solo es importante ver lo que son las publicaciones asi que con esto solo se debe de checar 
     -- las publicaciones que tengan el id de un admin
     topic VARCHAR(64),--no croe usar mar de esta cantidad de caracteres , de hecho me parece demasiado pero puede que tenga la necesidad
-    datePublication integer,--tal vez lo vaya a cambiar
+    datePublication integer--tal vez lo vaya a cambiar
 );
 
 
@@ -22,5 +22,5 @@ CREATE TABLE users(
     pass VARCHAR(64) NOT NULL,--sha256(password+token) 
     token INTEGER NOT NULL , --tiempo de registro+numero aleatorio // solo se puede usar para el momento de entrar al a cuenta, no es algo que sirva de mucho
     email VARCHAR(64) NOT NULL UNIQUE, --deberia de encriptar esto pero posiblemente en caso de que se les
-    ssid VARCHAR(64), --sha256(password+email+id+token+unix-time)
+    ssid VARCHAR(64) --sha256(password+email+id+token+unix-time)
 );
