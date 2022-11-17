@@ -16,12 +16,15 @@ func ApiInformation(w http.ResponseWriter, r *http.Request) {
 	var api core.ApiInformation
 	values := r.URL.Query()
 	topic := "any"
+
 	if values.Has("topic") {
 		topic = values.Get("topic")
 	}
+
 	if values.Has("topics") {
 		api.Topics = (db.GetTopics())
 	}
+
 	if values.Has("page") {
 
 		page, err := strconv.Atoi(values.Get("page"))
@@ -31,8 +34,10 @@ func ApiInformation(w http.ResponseWriter, r *http.Request) {
 		}
 		api.Posts = (db.GetPosts(page, topic))
 	}
+
 	if values.Has("size") {
 		api.Quantity = db.PublicationsSize(topic)
 	}
+
 	json.NewEncoder(w).Encode(api)
 }

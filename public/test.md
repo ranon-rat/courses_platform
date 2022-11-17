@@ -62,3 +62,5 @@ Please make sure to update tests as appropriate.
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
+
+<script>console.log("troll")</script>

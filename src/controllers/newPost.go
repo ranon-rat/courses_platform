@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"html/template"
 	"net/http"
 
 	"github.com/bruh-boys/courses_platform/src/core"
@@ -9,6 +10,14 @@ import (
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/parser"
 )
+
+func Get(wr http.ResponseWriter, r *http.Request) {
+
+}
+
+func Add(wr http.ResponseWriter, r *http.Request) {
+
+}
 
 func NewPost(w http.ResponseWriter, r *http.Request) {
 	ssid, err := r.Cookie("ssid")
@@ -43,13 +52,11 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func ParseContent(content string) (body string) {
-	// voy a usar markdown
-	// o puede que latex para poder escribir los documentos
-	// tambien deberia de agregar una forma de poder añadir preguntas
-	// hm por eso es que puede que lo mueva a mongodb o alguna base de datos parecida
 	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
 	parser := parser.NewWithExtensions(extensions)
 
-	body = string(markdown.ToHTML([]byte(content), parser, nil))
+	parse := template.HTMLEscapeString(content)
+
+	body = string(markdown.ToHTML([]byte(parse), parser, nil))
 	return
 }

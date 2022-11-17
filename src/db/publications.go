@@ -14,14 +14,14 @@ func NewPost(post core.ApiPostPublication, id int) {
 	db.Exec(`INSERT INTO publications
 			 	(title,mineature,content,topic,author,datePublication) 
 			VALUES(?1,?2,?3,?4,?5,?6)`,
-		post.Title, post.Mineature, post.Content, post.Topic, id, time.Now().Unix())
+		post.Title, post.Mineature, post.Content, post.Topics, id, time.Now().Unix())
 }
 
 // no requiere mucha explicacion , pero tambien se requiere usar en el frontend
 func GetPost(id int) (post core.ApiGetPublication) {
 	db := openDB()
 	defer db.Close()
-	db.QueryRow("SELECT * FROM publications WHERE ID=?1", id).Scan(&post.ID, &post.Title, &post.Content, &post.Author, &post.Topic, &post.Date)
+	db.QueryRow("SELECT * FROM publications WHERE ID=?1", id).Scan(&post.ID, &post.Title, &post.Content, &post.Author, &post.Topics, &post.Date)
 	return
 }
 
