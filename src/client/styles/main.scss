@@ -1,0 +1,42 @@
+$primary-trait: #d5d8e1;
+
+html, body {
+    height: 100%;
+}
+
+#sidebar-container {
+    box-shadow: 0 0 10px $primary-trait;
+}
+
+#sidebar {
+    position: sticky;
+    top: 60px;
+}
+
+#sidebar .list-group-item {
+    border: 0;
+    border-radius: 0;
+}
+
+#sidebar li.list-group-item {
+    border-bottom: 1px solid $primary-trait;
+}
+
+.navbar {
+    box-shadow: 0 0 10px $primary-trait;
+    background: #ffffff;
+    z-index: 2;
+}
+
+#fake-navbar {
+    min-height: 56px;
+    max-height: 56px;
+}
+
+.search-option {
+    border: 1px solid $primary-trait; 
+}
+
+.search-option:hover {
+    border: 1px solid red;
+}
