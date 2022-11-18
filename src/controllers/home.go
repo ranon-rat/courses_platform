@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -11,6 +10,22 @@ import (
 	"github.com/bruh-boys/courses_platform/src/db"
 )
 
+var tmp = template.New("tmp")
+
+func Setup() {
+	tmp.Funcs(template.FuncMap{
+		"loop": func(from, to int) <-chan int {
+			ch := make(chan int)
+			go func() {
+				for i := from; i <= to; i++ {
+					ch <- i
+				}
+				close(ch)
+			}()
+			return ch
+		},
+	})
+}
 func RenderHome(w http.ResponseWriter, r *http.Request) {
 	var api core.ApiInformation
 	values := r.URL.Query()
@@ -31,14 +46,16 @@ func RenderHome(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 	api.Posts = (db.GetPosts(page, topic))
-	fmt.Println(api.Posts)
-
-	if values.Has("size") {
-		api.Quantity = db.PublicationsSize(topic)
+	api.Quantity = db.PublicationsSize(topic)
+	to := (api.Quantity / core.PostPerPage)
+	if to > 8 {
+		to = page + 8
 	}
+	// ye
+	api.Page = page
+	api.To = to + 1
 	file, _ := os.ReadFile("public/views/home.html")
-
-	template := template.Must(template.New("main").Parse(string(file)))
+	template := template.Must(tmp.Parse(string(file)))
 	template.Execute(w, api)
 
 }

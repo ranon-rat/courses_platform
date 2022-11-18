@@ -18,6 +18,8 @@ type ApiGetPublication struct {
 }
 
 type ApiInformation struct {
+	Page     int
+	To       int
 	Quantity int                 `json:"quantity"`
 	Posts    []ApiGetPublication `json:"publications"` // no va a guardar el contenido , solo una preview
 	Topics   []string            `json:"topics"`

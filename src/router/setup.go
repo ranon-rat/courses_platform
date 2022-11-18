@@ -11,7 +11,7 @@ import (
 
 func SetupRouter() error {
 	router := mux.NewRouter().StrictSlash(true)
-
+	controllers.Setup()
 	router.HandleFunc("/sign-in", controllers.SignIn)
 	router.HandleFunc("/sign-up", controllers.SignUp)
 	router.HandleFunc("/api", controllers.ApiInformation)

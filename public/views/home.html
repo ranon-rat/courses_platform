@@ -18,25 +18,21 @@
         {{range .Posts}}
         <a href="/post?id={{.ID}}">
             <div class="posts">
-
-                <h3 > {{.Title}}</h3>
+                <h3> {{.Title}}</h3>
                 <h4>{{.Author}} </h4>
                 <h4>{{.Topic}} </h4>
-
                 <img id="mineature" src="{{.Mineature}}">
-
-
-
             </div>
         </a>
         {{end}}
     </div>
 
     <div id="pages">
-     {{range .Posts}}
-     
-        {{end}}
-
+        {{range $x := loop .Page .To }}
+        <span class="pages">
+            <a href="/?page={{$x}}"> {{$x}}</a>
+        </span>
+        {{- end}}
     </div>
 </body>
 
