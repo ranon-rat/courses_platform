@@ -13,18 +13,20 @@ func NewPost(post core.ApiPostPublication, id int) {
 	db := openDB()
 	defer db.Close()
 
-	db.Exec(`INSERT INTO publications
-			 	(title,mineature,content,topic,author,datePublication) 
-			VALUES(?1,?2,?3,?4,?5,?6)`,
-		post.Title, post.Mineature, post.Content, post.Topics, id, time.Now().Unix())
+	//sqlite3
+	insert := "INSERT INTO publications (title,content,mineature,author,topic,datePublication) VALUES (?1,?2,?3,?4,?5,?6)"
 
+	_, err := db.Exec(insert,
+		post.Title, post.Content, post.Mineature, id, post.Topic, time.Now().Unix())
+
+	fmt.Println(err)
 }
 
 // no requiere mucha explicacion , pero tambien se requiere usar en el frontend
 func GetPost(id int) (post core.ApiGetPublication) {
 	db := openDB()
 	defer db.Close()
-	db.QueryRow("SELECT * FROM publications WHERE ID=?1", id).Scan(&post.ID, &post.Title, &post.Content, &post.Author, &post.Topics, &post.Date)
+	db.QueryRow("SELECT * FROM publications WHERE ID=?1", id).Scan(&post.ID, &post.Title, &post.Content, &post.Author, &post.Topic, &post.Date)
 	return
 }
 
@@ -35,13 +37,13 @@ func GetPosts(page int, topic string) (posts []core.ApiGetPublication) {
 
 	defer db.Close()
 	id := PublicationsGetElement(topic, page)
-	rows, err := db.Query("SELECT (ID,title,mineature,author,datePublication) FROM publications WHERE ID<=?1 ORDER BY ID DESC LIMIT ?2", id, core.PostPerPage)
+	rows, err := db.Query("SELECT id,title,mineature,author,datePublication FROM publications WHERE ID<=?1 ORDER BY ID DESC LIMIT ?2", id, core.PostPerPage)
 	if err != nil {
 		fmt.Println("someting is wrong")
 	}
 	for rows.Next() {
 		var post core.ApiGetPublication
-		rows.Scan(&post.ID, &post.Title, &post.Author, &post.Date)
+		rows.Scan(&post.ID, &post.Title, &post.Mineature, &post.Author, &post.Date)
 		posts = append(posts, post)
 	}
 	return
@@ -74,6 +76,6 @@ func PublicationsGetElement(topic string, page int) (idPage int) {
 	defer db.Close()
 	// creo que deberia de funcionar este query
 
-	db.QueryRow("SELECT ID FROM publications  WHERE topic=?1 OR \"any\"=?1 ORDER BY ID DESC", topic).Scan(&idPage)
+	db.QueryRow("SELECT id FROM publications  WHERE topic=?1 OR \"any\"=?1 ORDER BY ID DESC", topic).Scan(&idPage)
 	return idPage
 }

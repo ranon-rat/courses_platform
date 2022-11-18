@@ -1,20 +1,20 @@
 package core
 
 type ApiPostPublication struct {
-	Content   string   `json:"content"`
-	Title     string   `json:"title"`
-	Mineature string   `json:"mineature"`
-	Topics    []string `json:"topics"`
+	Content   string `json:"content"`
+	Title     string `json:"title"`
+	Mineature string `json:"mineature"`
+	Topic     string `json:"topic"`
 }
 
 type ApiGetPublication struct {
-	ID        string   `json:"id"`
-	Content   string   `json:"content"`
-	Title     string   `json:"title"`
-	Mineature string   `json:"mineature"`
-	Author    string   `json:"author"`
-	Date      int      `json:"date"`
-	Topics    []string `json:"topics"`
+	ID        string `json:"id"`
+	Content   string `json:"content"`
+	Title     string `json:"title"`
+	Mineature string `json:"mineature"`
+	Author    string `json:"author"`
+	Date      int    `json:"date"`
+	Topic     string `json:"topic"`
 }
 
 type ApiInformation struct {
