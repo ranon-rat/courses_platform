@@ -1,6 +1,7 @@
 package db
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/bruh-boys/courses_platform/src/core"
@@ -37,7 +38,7 @@ func GetPosts(page int, topic string) (posts []core.ApiGetPublication) {
 	rows, err := db.Query("SELECT (ID,title,mineature,author,datePublication) FROM publications WHERE ID<=?1 ORDER BY ID DESC LIMIT ?2", id, core.PostPerPage)
 	if err != nil {
 		fmt.Println("someting is wrong")
-
+	}
 	for rows.Next() {
 		var post core.ApiGetPublication
 		rows.Scan(&post.ID, &post.Title, &post.Author, &post.Date)
