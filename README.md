@@ -4,7 +4,7 @@ A platform for uploading courses.
 
 ## Visualization
 
-
+![image](https://user-images.githubusercontent.com/78381898/202675870-4802c369-c92c-444b-b51e-c195834c5712.png)
 
 ## Build requirements
 
