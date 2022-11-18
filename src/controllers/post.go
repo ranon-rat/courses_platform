@@ -1,27 +1,41 @@
 package controllers
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
+	"os"
 	"strconv"
+	"text/template"
 
 	"github.com/bruh-boys/courses_platform/src/db"
 )
 
 func GetPost(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
 
-	if r.URL.Query().Has("id") {
-		id, err := strconv.Atoi(r.URL.Query().Get("id"))
-		if err != nil {
-			http.Error(w, "bad request", http.StatusBadRequest)
-			return
-		}
+	values := r.URL.Query()
 
-		post := db.GetPost(id)
-		fmt.Println([]byte(post.Content))
-		json.NewEncoder(w).Encode(post)
+	if !values.Has("id") {
+		values.Set("id", "1")
+	}
+
+	id, err := strconv.Atoi(values.Get("id"))
+
+	if err != nil {
+		http.Error(w, "Invalid id", http.StatusBadRequest)
+
 		return
 	}
-	http.Error(w, "bad request", http.StatusBadRequest)
+
+	file, _ := os.ReadFile("public/views/main.html")
+	post := db.GetPost(id)
+
+	if post.Content == "" {
+		post.Content = "Post not found"
+	}
+
+	//stri := strings.Replace(string(file), "!#!", post.Content, 1)
+	template := template.Must(template.New("main").Parse(string(file)))
+	template.Execute(w, post)
+
+	//w.Write([]byte(stri))
 }
