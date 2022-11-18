@@ -2,13 +2,12 @@ package controllers
 
 import (
 	"encoding/json"
-	"html/template"
 	"net/http"
 
 	"github.com/bruh-boys/courses_platform/src/core"
 	"github.com/bruh-boys/courses_platform/src/db"
 	"github.com/gomarkdown/markdown"
-	"github.com/gomarkdown/markdown/parser"
+	"github.com/microcosm-cc/bluemonday"
 )
 
 func Get(wr http.ResponseWriter, r *http.Request) {
@@ -57,11 +56,10 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func ParseContent(content string) (body string) {
-	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
-	parser := parser.NewWithExtensions(extensions)
+	maybeUnsafeHTML := markdown.ToHTML([]byte(content), nil, nil)
+	html := bluemonday.UGCPolicy().SanitizeBytes(maybeUnsafeHTML)
 
-	parse := template.HTMLEscapeString(content)
+	body = string(html)
 
-	body = string(markdown.ToHTML([]byte(parse), parser, nil))
 	return
 }

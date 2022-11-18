@@ -9,7 +9,6 @@ import (
 
 // los posts solo lo pueden hacer maestros o administradores
 func NewPost(post core.ApiPostPublication, id int) {
-
 	db := openDB()
 	defer db.Close()
 
@@ -26,7 +25,7 @@ func NewPost(post core.ApiPostPublication, id int) {
 func GetPost(id int) (post core.ApiGetPublication) {
 	db := openDB()
 	defer db.Close()
-	db.QueryRow("SELECT * FROM publications WHERE ID=?1", id).Scan(&post.ID, &post.Title, &post.Content, &post.Author, &post.Topic, &post.Date)
+	db.QueryRow("SELECT * FROM publications WHERE ID=?1", id).Scan(&post.ID, &post.Title, &post.Mineature, &post.Content, &post.Author, &post.Topic, &post.Date)
 	return
 }
 

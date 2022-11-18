@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -10,7 +11,7 @@ import (
 
 func GetPost(w http.ResponseWriter, r *http.Request) {
 
-	if r.URL.Query().Has("ID") {
+	if r.URL.Query().Has("id") {
 		id, err := strconv.Atoi(r.URL.Query().Get("id"))
 		if err != nil {
 			http.Error(w, "bad request", http.StatusBadRequest)
@@ -18,6 +19,7 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 		}
 
 		post := db.GetPost(id)
+		fmt.Println([]byte(post.Content))
 		json.NewEncoder(w).Encode(post)
 		return
 	}
