@@ -63,7 +63,7 @@ func PublicationsSize(topic string) (size int) {
 	db := openDB()
 	defer db.Close()
 
-	db.QueryRow("SELECT COUNT(*) FROM publications WHERE topic=?1 OR ?2", topic, topic == "any").Scan(&size)
+	db.QueryRow("SELECT COUNT(*) FROM publications WHERE topic=?1 OR  \"any\"=?1", topic).Scan(&size)
 
 	return
 }
@@ -72,6 +72,6 @@ func PublicationsGetElement(topic string, page int) (idPage int) {
 	defer db.Close()
 	// creo que deberia de funcionar este query
 
-	db.QueryRow("SELECT ID FROM publications  WHERE topic=?1 OR?2 ORDER BY ID DESC", topic, topic == "any").Scan(&idPage)
+	db.QueryRow("SELECT ID FROM publications  WHERE topic=?1 OR \"any\"=?1 ORDER BY ID DESC", topic).Scan(&idPage)
 	return idPage
 }
