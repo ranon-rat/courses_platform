@@ -26,7 +26,7 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	file, _ := os.ReadFile("public/views/main.html")
+	file, _ := os.ReadFile("public/views/post.html")
 	post := db.GetPost(id)
 
 	if post.Content == "" {

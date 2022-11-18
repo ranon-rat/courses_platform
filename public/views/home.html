@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+
+<body>
+
+    <h1>
+        test
+    </h1>
+    <div id="posts">
+
+        {{range .Posts}}
+        <a href="/post?id={{.ID}}">
+            <div class="posts">
+
+                <h3 > {{.Title}}</h3>
+                <h4>{{.Author}} </h4>
+                <h4>{{.Topic}} </h4>
+
+                <img id="mineature" src="{{.Mineature}}">
+
+
+
+            </div>
+        </a>
+        {{end}}
+    </div>
+
+    <div id="pages">
+     {{range .Posts}}
+     
+        {{end}}
+
+    </div>
+</body>
+
+</html>

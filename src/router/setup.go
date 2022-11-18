@@ -20,8 +20,8 @@ func SetupRouter() error {
 	router.HandleFunc(`/public/{file:[\w\W\/]+}`, func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, r.URL.Path[1:])
 	})
-
-	router.HandleFunc("/", controllers.GetPost)
+	router.HandleFunc("/post", controllers.GetPost)
+	router.HandleFunc("/", controllers.RenderHome)
 
 	port, exist := os.LookupEnv("PORT")
 	if !exist {
