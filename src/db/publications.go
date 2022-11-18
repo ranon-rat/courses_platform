@@ -32,7 +32,7 @@ func GetPosts(page int, topic string) (posts []core.ApiGetPublication) {
 
 	defer db.Close()
 	id := PublicationsGetElement(topic, page)
-	rows, err := db.Query("SELECT (ID,title,mineature,author,datePublication) FROM publications WHERE ID<=?1 ORDER BY ID DESC LIMIT ?2", id, page*core.PostPerPage)
+	rows, err := db.Query("SELECT (ID,title,mineature,author,datePublication) FROM publications WHERE ID<=?1 ORDER BY ID DESC LIMIT ?2", id, core.PostPerPage)
 	if err != nil {
 		fmt.Println("someting is wrong")
 
