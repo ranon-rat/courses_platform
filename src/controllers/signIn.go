@@ -22,7 +22,12 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		ssid, err := r.Cookie("ssid")
-		priv, _ := db.Existence(ssid.Value)
+		priv := core.Pupil
+
+		if err == nil {
+			priv, _ = db.Existence(ssid.Value)
+		}
+
 		if priv == 0 || err != nil {
 
 			ssid := db.SignIn(sign)

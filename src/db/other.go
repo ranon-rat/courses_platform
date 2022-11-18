@@ -23,3 +23,7 @@ func openDB() *sql.DB {
 func hashIt(pass string) string {
 	return hex.EncodeToString(sha256.New().Sum([]byte(pass)))
 }
+
+func Hash(s string) string {
+	return hashIt(s)
+}

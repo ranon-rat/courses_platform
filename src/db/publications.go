@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/bruh-boys/courses_platform/src/core"
@@ -9,12 +8,15 @@ import (
 
 // los posts solo lo pueden hacer maestros o administradores
 func NewPost(post core.ApiPostPublication, id int) {
+
 	db := openDB()
 	defer db.Close()
+
 	db.Exec(`INSERT INTO publications
 			 	(title,mineature,content,topic,author,datePublication) 
 			VALUES(?1,?2,?3,?4,?5,?6)`,
 		post.Title, post.Mineature, post.Content, post.Topics, id, time.Now().Unix())
+
 }
 
 // no requiere mucha explicacion , pero tambien se requiere usar en el frontend
@@ -36,7 +38,6 @@ func GetPosts(page int, topic string) (posts []core.ApiGetPublication) {
 	if err != nil {
 		fmt.Println("someting is wrong")
 
-	}
 	for rows.Next() {
 		var post core.ApiGetPublication
 		rows.Scan(&post.ID, &post.Title, &post.Author, &post.Date)
@@ -63,7 +64,7 @@ func PublicationsSize(topic string) (size int) {
 	db := openDB()
 	defer db.Close()
 
-	db.QueryRow("SELECT COUNT(*) FROM publications WHERE topic=?1 OR  \"any\"=?1", topic).Scan(&size)
+	db.QueryRow("SELECT COUNT * FROM publications WHERE topic=?1 OR  \"any\"=?1", topic).Scan(&size)
 
 	return
 }
