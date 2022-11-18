@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"math/rand"
 	"net/http"
 	"time"
@@ -14,30 +13,44 @@ import (
 func SignUp(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().Unix())
 	switch r.Method {
-
 	case "POST":
 		var sign core.SignUp
+
 		if err := json.NewDecoder(r.Body).Decode(&sign); err != nil {
 			http.Error(w, "bad request", http.StatusBadRequest)
 			return
 		}
+
 		ssid, err := r.Cookie("ssid")
+
+		if err != nil {
+			if err = db.SignUp(sign); err != nil {
+				http.Error(w, "username or email are already registered", http.StatusConflict)
+			}
+
+			return
+		}
+
 		priv, _ := db.Existence(ssid.Value)
+
 		if priv != core.Admin {
 			sign.Privileges = core.Pupil
 		}
+
 		if sign.Privileges < core.Admin || sign.Privileges > core.Pupil {
 			http.Error(w, "unkown kind of user", http.StatusBadRequest)
 		}
+
 		if err != nil || priv == core.Admin {
 
 			if err = db.SignUp(sign); err != nil {
 				http.Error(w, "username or email are already registered", http.StatusConflict)
 			}
+
 		}
 	case "GET":
 		// para el admin la interfaz sera un tanto diferente al agregar algun nuevo profesor
-		fmt.Println("do something her")
+
 	default:
 		http.Error(w, "Not implemented yet", http.StatusUnauthorized)
 	}

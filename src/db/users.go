@@ -30,20 +30,22 @@ func SignIn(sgIn core.SignIn) (ssid string) {
 	db := openDB()
 	defer db.Close()
 	token, id := 0, 0
-	db.QueryRow("SELECT (token,id) FROM users WHERE email=?1", sgIn.Email).Scan(&token, &id)
+
+	db.QueryRow("SELECT token,id FROM users WHERE email=?1", sgIn.Email).Scan(&token, &id)
 
 	ssid = hashIt(fmt.Sprintf("%s%s%d%d%d%d", sgIn.Password, sgIn.Email, id, time.Now().Unix(), token, rand.Int()))
 
 	db.Exec("UPDATE users SET ssid=?1 WHERE pass=?2 AND email=?3", hashIt(ssid), hashIt(fmt.Sprintf("%s%d", sgIn.Password, token)), sgIn.Email)
-	return
 
+	return
 }
 
 // solo checo si el usuario ya a iniciado sesion, utilizo una cookie que se genera automaticamente al iniciar sesion
 func Existence(ssid string) (priv, id int) {
+
 	db := openDB()
 	defer db.Close()
-	r := db.QueryRow("SELECT (privileges,ID) FROM users WHERE ssid=?1", hashIt(ssid))
+	r := db.QueryRow("SELECT privileges,ID FROM users WHERE ssid=?1", Hash(ssid))
 	r.Scan(&priv, &id)
 	return
 }

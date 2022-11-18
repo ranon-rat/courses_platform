@@ -7,5 +7,7 @@ import (
 )
 
 func main() {
+	//fmt.Println(db.Hash("1234"))
+
 	log.Println(router.SetupRouter())
 }

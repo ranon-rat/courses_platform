@@ -15,6 +15,7 @@ func SetupRouter() error {
 	http.HandleFunc("/sign-up", controllers.SignUp)
 	http.HandleFunc("/api", controllers.ApiInformation)
 	http.HandleFunc("/new-post", controllers.NewPost)
+	http.HandleFunc("/post", controllers.GetPost)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		file, _ := os.ReadFile("public/index.html")
