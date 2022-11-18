@@ -31,8 +31,8 @@ func GetPosts(page int, topic string) (posts []core.ApiGetPublication) {
 	db := openDB()
 
 	defer db.Close()
-	size := PublicationsSize(topic)
-	rows, err := db.Query("SELECT (ID,title,mineature,author,datePublication) FROM publications WHERE ID<=?1 AND ID>=?2 ORDER BY DESC", (size - (page * core.PostPerPage)), size-(page*core.PostPerPage)+core.PostPerPage+1)
+	id := PublicationsGetElement(topic, page)
+	rows, err := db.Query("SELECT (ID,title,mineature,author,datePublication) FROM publications WHERE ID<=?1 ORDER BY ID DESC LIMIT ?2", id, page*core.PostPerPage)
 	if err != nil {
 		fmt.Println("someting is wrong")
 
@@ -58,16 +58,20 @@ func GetTopics() (topics []string) {
 	return
 }
 
-// obtengo la cantidad de publicaciones, me sirve para poder hacer algunas cosas en general
+// obtengo la cantidad de publicaciones, solo sirve para poder mostrar la pagina
 func PublicationsSize(topic string) (size int) {
 	db := openDB()
 	defer db.Close()
 
-	if topic == "any" {
-		db.QueryRow("SELECT COUNT(*) FROM publications").Scan(&size)
-		return
-	}
-	db.QueryRow("SELECT COUNT(*) FROM publications WHERE topic=?1", topic).Scan(&size)
+	db.QueryRow("SELECT COUNT(*) FROM publications WHERE topic=?1 OR ?2", topic, topic == "any").Scan(&size)
 
 	return
+}
+func PublicationsGetElement(topic string, page int) (idPage int) {
+	db := openDB()
+	defer db.Close()
+	// creo que deberia de funcionar este query
+
+	db.QueryRow("SELECT ID FROM publications  WHERE topic=?1 OR?2 ORDER BY ID DESC", topic, topic == "any").Scan(&idPage)
+	return idPage
 }
