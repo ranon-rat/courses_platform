@@ -56,7 +56,6 @@ func ParseContent(content string) (body string) {
 	parser := parser.NewWithExtensions(extensions)
 
 	parse := template.HTMLEscapeString(content)
-
 	body = string(markdown.ToHTML([]byte(parse), parser, nil))
 	return
 }
