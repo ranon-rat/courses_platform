@@ -20,6 +20,7 @@ type ApiGetPublication struct {
 }
 
 type ApiInformation struct {
+	Logged   bool
 	Page     int
 	To       int
 	Quantity int                 `json:"quantity"`

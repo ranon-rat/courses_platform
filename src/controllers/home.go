@@ -28,6 +28,16 @@ func Setup() {
 }
 func RenderHome(w http.ResponseWriter, r *http.Request) {
 	var api core.ApiInformation
+	api.Logged = true
+
+	ssid, err := r.Cookie("ssid")
+
+	if err != nil {
+		api.Logged = false
+	} else if priv, _ := db.Existence(ssid.Value); priv == 0 {
+		api.Logged = false
+	}
+
 	values := r.URL.Query()
 	topic := "any"
 

@@ -25,8 +25,8 @@ func SetupRouter() error {
 
 	port, exist := os.LookupEnv("PORT")
 	if !exist {
-		log.Println("debuggin mode,working in the port 3000")
-		port = "3000"
+		log.Println("debuggin mode,working in the port 8080")
+		port = "8080"
 	}
 
 	return http.ListenAndServe(":"+port, router)

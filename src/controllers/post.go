@@ -9,6 +9,18 @@ import (
 	"github.com/bruh-boys/courses_platform/src/db"
 )
 
+type Publication struct {
+	Logged       bool
+	ID           string
+	Content      string
+	Title        string
+	Mineature    string
+	Author       string
+	Date         int
+	Topic        string
+	Introduction string
+}
+
 func GetPost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 
@@ -29,13 +41,34 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 	file, _ := os.ReadFile("public/views/post.html")
 	post := db.GetPost(id)
 
-	if post.Content == "" {
-		post.Content = "Post not found"
+	var api = Publication{
+		ID:           post.ID,
+		Content:      post.Content,
+		Title:        post.Title,
+		Mineature:    post.Mineature,
+		Author:       post.Author,
+		Date:         post.Date,
+		Topic:        post.Topic,
+		Introduction: post.Introduction,
+	}
+
+	api.Logged = true
+
+	ssid, err := r.Cookie("ssid")
+
+	if err != nil {
+		api.Logged = false
+	} else if priv, _ := db.Existence(ssid.Value); priv == 0 {
+		api.Logged = false
+	}
+
+	if api.Content == "" {
+		api.Content = "Post not found"
 	}
 
 	//stri := strings.Replace(string(file), "!#!", post.Content, 1)
 	template := template.Must(template.New("main").Parse(string(file)))
-	template.Execute(w, post)
+	template.Execute(w, api)
 
 	//w.Write([]byte(stri))
 }

@@ -29,13 +29,14 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarScroll">
-                
+
 
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                 </ul>
+
                 <form class="" style="display: block;" autocomplete="off">
                     <div class="">
                         <div class="">
@@ -50,37 +51,51 @@
                     </div>
                 </form>
 
-            </div>
-        </div>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown button
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <ul class="navbar-nav my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    {{if not .Logged}}
+                    <li class="nav-item ms-2">
+                        <button id="signin-button" onclick="no_implement_sign()" class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#signin-popup" aria-expanded="false" aria-controls="signin-popup">
+                            SignIn
+                        </button>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <button id="signup-button" onclick="no_implement_sign()" class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#signup-popup" aria-expanded="false" aria-controls="signup-popup">
+                            SignUp
+                        </button>
+                    </li>
+                    {{else}}
+                    <li class="nav-item ms-2">
+                        <button id="signout" class="btn btn-outline-secondary" type="submit">SignOut</button>
+                    </li>
+                    {{end}}
+                </ul>
+
             </div>
         </div>
     </nav>
-    <div id="posts">
 
-        <div class="card-deck">
+    <div class="container-fluid post-container">
+        <div id="posts" class="row p-sm-2 p-md-4 p-lg-5">
+
             {{range .Posts}}
-            <div class="card" style="width: 18rem;">
 
-                <a href="/post?id={{.ID}}">
-                    <img class="card-img-top" src="{{.Mineature}}" alt="Card image cap">
+            <div class="col-3 card" style="width: 18rem;">
+                <a href="/post?id={{.ID}}" style="text-decoration: none; color: black;">
+                    <img src="{{.Mineature}}" class="card-img-top" alt="{{.Topic}}">
                     <div class="card-body">
                         <h5 class="card-title">{{.Title}}</h5>
                         <p class="card-text">{{.Introduction}}</p>
+
                     </div>
                 </a>
             </div>
 
             {{end}}
+
         </div>
+
     </div>
 
     <div id="pages">
@@ -93,12 +108,11 @@
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
+
                 {{range $x := loop .Page .To }}
-
                 <li class="page-item"><a class="page-link" href="/?page={{$x}}">{{$x}}</a></li>
-
-
                 {{- end}}
+
                 <li class="page-item">
                     <a class="page-link" href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
@@ -106,14 +120,10 @@
                     </a>
                 </li>
             </ul>
-
         </nav>
-
     </div>
 
     <script src="/public/scripts/main.js"></script>
-
-
 </body>
 
 </html>

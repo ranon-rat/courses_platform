@@ -13,7 +13,7 @@ func NewPost(post core.ApiPostPublication, id int) {
 	defer db.Close()
 
 	//sqlite3
-	insert := "INSERT INTO publications (title,content,mineature,author,topic,datePublication,introduction) VALUES (?1,?2,?3,?4,?5,?6)"
+	insert := "INSERT INTO publications (title,content,mineature,author,topic,datePublication,introduction) VALUES (?1,?2,?3,?4,?5,?6,?7)"
 
 	_, err := db.Exec(insert,
 		post.Title, post.Content, post.Mineature, id, post.Topic, time.Now().Unix(), post.Introduction)

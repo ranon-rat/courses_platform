@@ -9,6 +9,7 @@ html, body {
 #sidebar {
   position: sticky;
   top: 60px;
+  min-height: calc(100vh - 67px);
 }
 
 #sidebar .list-group-item {
@@ -37,6 +38,13 @@ html, body {
 
 .search-option:hover {
   border: 1px solid red;
+}
+
+.post-container {
+  min-height: calc(100vh - 67px - 38px);
+}
+.post-container .card {
+  box-shadow: 0 0 10px #d5d8e1;
 }
 
 /*# sourceMappingURL=main.css.map */

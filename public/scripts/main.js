@@ -40,20 +40,21 @@ input.addEventListener('blur', function () {
     setTimeout(() => group.innerHTML = '', 200);
 });
 // tag, title
-let titles = [];
-for (const tag of ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']) {
-    const elements = document.getElementsByTagName(tag);
-    for (let i = 0; i < elements.length; i++) {
-        const element = elements[i]; // @ts-ignore
-        element.setAttribute('id', `${element.innerHTML}`);
-        titles.push([element.id, element.innerText]);
-    }
-}
+const query = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
 const sidebar = document.getElementById('sidebar');
-for (const [id, title] of titles) {
+for (const item of query) {
+    const title = item.textContent || '';
+    item.setAttribute('id', title);
     sidebar.innerHTML += `
         <li class="list-group-item">
-            <a class="list-group-item list-group-item-action" href="#${id}">${title}</a>
+            <a class="list-group-item list-group-item-action" href="#${title}">${title}</a>
         </li>
     `;
+}
+const signout = document.getElementById('signout');
+signout?.addEventListener('click', function () {
+    document.cookie = "ssid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+});
+function no_implement_sign() {
+    alert('Temporary only admins can do this');
 }
