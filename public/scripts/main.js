@@ -45,6 +45,8 @@ const sidebar = document.getElementById('sidebar');
 if (sidebar)
     for (const item of query) {
         const title = item.textContent || '';
+        if (item.classList.contains('modal-title'))
+            continue;
         item.setAttribute('id', title);
         sidebar.innerHTML += `
         <li class="list-group-item">
@@ -54,7 +56,7 @@ if (sidebar)
     }
 function signOut() {
     document.cookie = "ssid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    window.location.href = '/';
+    window.location.reload();
 }
 function no_implement_sign() {
     alert('Temporary only admins can do this');
@@ -83,7 +85,7 @@ document.getElementById("signInForm").addEventListener("submit", function (e) {
                 alert('Wrong login or password');
                 break;
             default:
-                window.location.href = '/';
+                window.location.reload();
         }
     });
 });
@@ -106,7 +108,7 @@ document.getElementById("signUpForm").addEventListener("submit", function (e) {
                             alert('Wrong login or password');
                             break;
                         default:
-                            window.location.href = '/';
+                            window.location.reload();
                     }
                 });
         }
