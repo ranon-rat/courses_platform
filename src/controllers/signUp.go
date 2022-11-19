@@ -23,14 +23,6 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 
 		ssid, err := r.Cookie("ssid")
 
-		if err != nil {
-			if err = db.SignUp(sign); err != nil {
-				http.Error(w, "username or email are already registered", http.StatusConflict)
-			}
-
-			return
-		}
-
 		_, priv, _ := db.Existence(ssid.Value)
 
 		if priv != core.Admin {
