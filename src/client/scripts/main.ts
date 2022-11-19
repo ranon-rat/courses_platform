@@ -60,9 +60,9 @@ input.addEventListener('blur', function () {
 
 // tag, title
 const query = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-const sidebar = document.getElementById('sidebar')!;
+const sidebar = document.getElementById('sidebar');
 
-for (const item of query) {
+if (sidebar) for (const item of query) {
     const title = item.textContent || '';
 
     item.setAttribute('id', title);
@@ -74,13 +74,77 @@ for (const item of query) {
     `;
 }
 
-const signout = document.getElementById('signout');
 
-signout?.addEventListener('click', function () {
+function signOut() {
     document.cookie = "ssid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-});
+    window.location.href = '/';
+}
 
 function no_implement_sign() {
     alert('Temporary only admins can do this');
 }
+
+
+function getData(form: HTMLFormElement) {
+    const data = new FormData(form);
+
+    return data;
+}
+
+async function requestSign(path: string, data: object) {
+    const resp = fetch('/' + path, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify(data)
+    });
+
+    return resp;
+}
+
+document.getElementById("signInForm")!.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let data = getData(e.target as HTMLFormElement);
+
+    requestSign('sign-in', data).then((resp) => {
+        switch (resp.status) {
+            case 401:
+                alert('Wrong login or password');
+                break;
+            default:
+                window.location.href = '/';
+        }
+    });
+
+});
+
+document.getElementById("signUpForm")!.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let data = JSON.parse(JSON.stringify(getData(e.target as HTMLFormElement)));
+    data['privileges'] = 3;
+
+    requestSign('sign-up', data).then((resp) => {
+        switch (resp.status) {
+            case 409:
+                alert('Failed to create user');
+                break;
+            case 400:
+                alert('Failed to create user');
+                break;
+            default:
+                requestSign('sign-in', data).then((resp) => {
+                    switch (resp.status) {
+                        case 401:
+                            alert('Wrong login or password');
+                            break;
+                        default:
+                            window.location.href = '/';
+                    }
+                });
+        }
+    });
+});

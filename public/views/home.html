@@ -54,20 +54,20 @@
                 <ul class="navbar-nav my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                     {{if not .Logged}}
                     <li class="nav-item ms-2">
-                        <button id="signin-button" onclick="no_implement_sign()" class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#signin-popup" aria-expanded="false" aria-controls="signin-popup">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                            data-bs-target="#signInModel">
                             SignIn
                         </button>
                     </li>
                     <li class="nav-item ms-2">
-                        <button id="signup-button" onclick="no_implement_sign()" class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#signup-popup" aria-expanded="false" aria-controls="signup-popup">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                            data-bs-target="#signUpModel">
                             SignUp
                         </button>
                     </li>
                     {{else}}
                     <li class="nav-item ms-2">
-                        <button id="signout" class="btn btn-outline-secondary" type="submit">SignOut</button>
+                        <button onclick="signOut()" class="btn btn-outline-secondary" type="submit">SignOut</button>
                     </li>
                     {{end}}
                 </ul>
@@ -121,6 +121,82 @@
                 </li>
             </ul>
         </nav>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="signInModel" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signInModalLabel">SignIn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form id="signInForm">
+                    <div class="modal-body">
+                        <!-- Email input -->
+                        <div class="form-outline mb-2">
+                            <input type="email" name="email" class="form-control" />
+                            <label class="form-label" for="email">Email</label>
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="form-outline mb-2">
+                            <input type="password" name="password" class="form-control" />
+                            <label class="form-label" for="password">Password</label>
+                        </div>
+                    </div>
+
+                    <!-- Submit button -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" >Sign In</button>
+                    </div>
+
+                    <!--<button type="submit" class="btn btn-primary btn-block mb-3">Sign in</button>-->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="signUpModel" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signUpModalLabel">SignIn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form id="signUpForm">
+                    <div class="modal-body">
+                        <!-- Username input -->
+                        <div class="form-outline mb-2">
+                            <input type="text" name="username" class="form-control" />
+                            <label class="form-label" for="username">Username</label>
+                        </div>
+
+                        <!-- Email input -->
+                        <div class="form-outline mb-2">
+                            <input type="email" name="email" class="form-control" />
+                            <label class="form-label" for="email">Email</label>
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="form-outline mb-2">
+                            <input type="password" name="password" class="form-control" />
+                            <label class="form-label" for="password">Password</label>
+                        </div>
+
+                    <!-- Submit button -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
 
     <script src="/public/scripts/main.js"></script>
