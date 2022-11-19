@@ -10,19 +10,19 @@ import (
 	"github.com/bruh-boys/courses_platform/src/db"
 )
 
-var tmp = template.New("tmp")
-
-func Setup() {
-	tmp.Funcs(template.FuncMap{
-		"loop": func(from, to int) []int {
-			list := []int{}
+var tmpFuncs = template.FuncMap{
+	"loop": func(from, to int) <-chan int {
+		ch := make(chan int)
+		go func() {
 			for i := from; i <= to; i++ {
-				list = append(list, i)
+				ch <- i
 			}
-			return list
-		},
-	})
+			close(ch)
+		}()
+		return ch
+	},
 }
+
 func RenderHome(w http.ResponseWriter, r *http.Request) {
 	var api core.ApiInformation
 	api.Logged = false
@@ -65,7 +65,7 @@ func RenderHome(w http.ResponseWriter, r *http.Request) {
 	api.Page = page
 	api.To = to + 1
 	file, _ := os.ReadFile("public/views/home.html")
-	template := template.Must(tmp.Parse(string(file)))
+	template := template.Must(template.New("html").Funcs(tmpFuncs).Parse(string(file)))
 
 	template.Execute(w, api)
 
