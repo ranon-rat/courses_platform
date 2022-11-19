@@ -38,7 +38,7 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	file, _ := os.ReadFile("public/views/post.html")
+	file, _ := os.ReadFile("templates/post.html")
 	post := db.GetPost(id)
 
 	var api = Publication{

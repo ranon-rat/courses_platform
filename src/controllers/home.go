@@ -64,7 +64,7 @@ func RenderHome(w http.ResponseWriter, r *http.Request) {
 	// ye
 	api.Page = page
 	api.To = to + 1
-	file, _ := os.ReadFile("public/views/home.html")
+	file, _ := os.ReadFile("templates/home.html")
 	template := template.Must(template.New("html").Funcs(tmpFuncs).Parse(string(file)))
 
 	template.Execute(w, api)
