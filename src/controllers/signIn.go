@@ -28,7 +28,6 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 			exist, _, _ = db.Existence(ssid.Value)
 
 		}
-
 		if exist == 0 || err != nil {
 			if db.ExistenceWithPass(sign) > 0 {
 				ssid := db.SignIn(sign)

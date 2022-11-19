@@ -16,7 +16,7 @@ func SignUp(sUp core.SignUp) (err error) {
 
 	token := rand.Int() + int(time.Now().Unix())
 	password := hashIt(fmt.Sprintf("%s%d", sUp.Password, token))
-	_, err = db.Exec("INSERT INTO users privileges,username,email,pass,token VALUES ?1,?2,?3,?4,?5 ",
+	_, err = db.Exec("INSERT INTO users(privileges,username,email,pass,token) VALUES( ?1,?2,?3,?4,?5 )",
 		sUp.Privileges,
 		sUp.Username,
 		sUp.Email,
@@ -42,10 +42,10 @@ func SignIn(sgIn core.SignIn) (ssid string) {
 func ExistenceWithPass(sgIn core.SignIn) (how int) {
 	db := openDB()
 	defer db.Close()
-	token, id := 0, 0
+	token := 0
 
-	db.QueryRow("SELECT token,id FROM users WHERE email=?1", sgIn.Email).Scan(&token, &id)
-	db.QueryRow("SELECT COUNT(*) FROM users WHERE pass=?1 AND email=?3", hashIt(fmt.Sprintf("%s%d", sgIn.Password, token)), sgIn.Email).Scan(&how)
+	db.QueryRow("SELECT token FROM users WHERE email=?1", sgIn.Email).Scan(&token)
+	db.QueryRow("SELECT COUNT(*) FROM users WHERE pass=?1 AND email=?2", hashIt(fmt.Sprintf("%s%d", sgIn.Password, token)), sgIn.Email).Scan(&how)
 	return
 }
 
@@ -54,7 +54,6 @@ func Existence(ssid string) (exist, priv, id int) {
 
 	db := openDB()
 	defer db.Close()
-	r := db.QueryRow("SELECT COUNT(*),privileges,ID FROM users WHERE ssid=?1", Hash(ssid))
-	r.Scan(&exist, &priv, &id)
+	db.QueryRow("SELECT COUNT(*),privileges,ID FROM users WHERE ssid=?1", Hash(ssid)).Scan(&exist, &priv, &id)
 	return
 }

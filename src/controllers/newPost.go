@@ -10,14 +10,6 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 )
 
-func Get(wr http.ResponseWriter, r *http.Request) {
-
-}
-
-func Add(wr http.ResponseWriter, r *http.Request) {
-
-}
-
 func NewPost(w http.ResponseWriter, r *http.Request) {
 
 	ssid, err := r.Cookie("ssid")

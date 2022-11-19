@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"math/rand"
 	"net/http"
 	"time"
@@ -22,21 +23,19 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		}
 
 		ssid, err := r.Cookie("ssid")
-
-		_, priv, _ := db.Existence(ssid.Value)
-
+		priv := core.Pupil
+		if err == nil {
+			_, priv, _ = db.Existence(ssid.Value)
+		}
 		if priv != core.Admin {
 			sign.Privileges = core.Pupil
-		}
-
-		if sign.Privileges < core.Admin || sign.Privileges > core.Pupil {
-			http.Error(w, "unkown kind of user", http.StatusBadRequest)
 		}
 
 		if err != nil || priv == core.Admin {
 
 			if err = db.SignUp(sign); err != nil {
 				http.Error(w, "username or email are already registered", http.StatusConflict)
+				fmt.Println(err)
 			}
 
 		}
