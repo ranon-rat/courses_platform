@@ -11,7 +11,8 @@ CREATE TABLE publications(
     -- en si solo es importante ver lo que son las publicaciones asi que con esto solo se debe de checar 
     -- las publicaciones que tengan el id de un admin
     topic VARCHAR(64),--no croe usar mar de esta cantidad de caracteres , de hecho me parece demasiado pero puede que tenga la necesidad
-    datePublication integer--tal vez lo vaya a cambiar
+    datePublication integer,--tal vez lo vaya a cambiar
+    Introduction VARCHAR(255)
 );
 
 

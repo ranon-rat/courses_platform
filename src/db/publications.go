@@ -13,10 +13,10 @@ func NewPost(post core.ApiPostPublication, id int) {
 	defer db.Close()
 
 	//sqlite3
-	insert := "INSERT INTO publications (title,content,mineature,author,topic,datePublication) VALUES (?1,?2,?3,?4,?5,?6)"
+	insert := "INSERT INTO publications (title,content,mineature,author,topic,datePublication,introduction) VALUES (?1,?2,?3,?4,?5,?6)"
 
 	_, err := db.Exec(insert,
-		post.Title, post.Content, post.Mineature, id, post.Topic, time.Now().Unix())
+		post.Title, post.Content, post.Mineature, id, post.Topic, time.Now().Unix(), post.Content[:255%len(post.Content)])
 
 	fmt.Println(err)
 }
@@ -25,7 +25,7 @@ func NewPost(post core.ApiPostPublication, id int) {
 func GetPost(id int) (post core.ApiGetPublication) {
 	db := openDB()
 	defer db.Close()
-	db.QueryRow("SELECT * FROM publications WHERE ID=?1", id).Scan(&post.ID, &post.Title, &post.Mineature, &post.Content, &post.Author, &post.Topic, &post.Date)
+	db.QueryRow("SELECT * FROM publications WHERE ID=?1", id).Scan(&post.ID, &post.Title, &post.Mineature, &post.Content, &post.Author, &post.Topic, &post.Date, &post.Introduction)
 	return
 }
 
@@ -36,13 +36,13 @@ func GetPosts(page int, topic string) (posts []core.ApiGetPublication) {
 
 	defer db.Close()
 	id := PublicationsGetElement(topic, page)
-	rows, err := db.Query("SELECT id,title,mineature,author,datePublication FROM publications WHERE ID<=?1 ORDER BY ID DESC LIMIT ?2", id, core.PostPerPage)
+	rows, err := db.Query("SELECT id,title,mineature,author,datePublication,introduction FROM publications WHERE ID<=?1 ORDER BY ID DESC LIMIT ?2", id, core.PostPerPage)
 	if err != nil {
 		fmt.Println("someting is wrong")
 	}
 	for rows.Next() {
 		var post core.ApiGetPublication
-		rows.Scan(&post.ID, &post.Title, &post.Mineature, &post.Author, &post.Date)
+		rows.Scan(&post.ID, &post.Title, &post.Mineature, &post.Author, &post.Date, &post.Introduction)
 		posts = append(posts, post)
 	}
 	return

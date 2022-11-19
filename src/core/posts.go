@@ -8,13 +8,14 @@ type ApiPostPublication struct {
 }
 
 type ApiGetPublication struct {
-	ID        string `json:"id"`
-	Content   string `json:"content"`
-	Title     string `json:"title"`
-	Mineature string `json:"mineature"`
-	Author    string `json:"author"`
-	Date      int    `json:"date"`
-	Topic     string `json:"topic"`
+	ID           string `json:"id"`
+	Content      string `json:"content"`
+	Title        string `json:"title"`
+	Mineature    string `json:"mineature"`
+	Author       string `json:"author"`
+	Date         int    `json:"date"`
+	Topic        string `json:"topic"`
+	Introduction string `json:"introduction"`
 }
 
 type ApiInformation struct {
