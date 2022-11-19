@@ -1,10 +1,10 @@
 package controllers
 
 import (
+	"html/template"
 	"net/http"
 	"os"
 	"strconv"
-	"text/template"
 
 	"github.com/bruh-boys/courses_platform/src/core"
 	"github.com/bruh-boys/courses_platform/src/db"
@@ -14,15 +14,12 @@ var tmp = template.New("tmp")
 
 func Setup() {
 	tmp.Funcs(template.FuncMap{
-		"loop": func(from, to int) <-chan int {
-			ch := make(chan int)
-			go func() {
-				for i := from; i <= to; i++ {
-					ch <- i
-				}
-				close(ch)
-			}()
-			return ch
+		"loop": func(from, to int) []int {
+			list := []int{}
+			for i := from; i <= to; i++ {
+				list = append(list, i)
+			}
+			return list
 		},
 	})
 }
