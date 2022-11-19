@@ -39,13 +39,17 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "POST":
+
 		var post core.ApiPostPublication
 
 		if err := json.NewDecoder(r.Body).Decode(&post); err != nil {
 			http.Error(w, "error parsing the body request", http.StatusBadRequest)
 			return
 		}
-
+		if post.Content == "" {
+			http.Error(w, "you cant do that", http.StatusBadRequest)
+			return
+		}
 		post.Content = ParseContent(post.Content)
 
 		db.NewPost(post, id)
