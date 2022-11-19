@@ -16,7 +16,7 @@ func SignUp(sUp core.SignUp) (err error) {
 
 	token := rand.Int() + int(time.Now().Unix())
 	password := hashIt(fmt.Sprintf("%s%d", sUp.Password, token))
-	_, err = db.Exec("INSERT INTO users(privileges,username,email,pass,token) VALUES( ?1,?2,?3,?4,?5 )",
+	_, err = db.Exec("INSERT INTO users(privileges,username,email,pass,token) VALUES( ?1,?2,?3,?4,?5)",
 		sUp.Privileges,
 		sUp.Username,
 		sUp.Email,
@@ -32,8 +32,8 @@ func SignIn(sgIn core.SignIn) (ssid string) {
 	token, id := 0, 0
 
 	db.QueryRow("SELECT token,id FROM users WHERE email=?1", sgIn.Email).Scan(&token, &id)
-
-	ssid = hashIt(fmt.Sprintf("%s%s%d%d%d%d", sgIn.Password, sgIn.Email, id, time.Now().Unix(), token, rand.Int()))
+	// con esto evito cualquier problema
+	ssid = hashIt(fmt.Sprintf("%s%s%d%d", sgIn.Password, sgIn.Email, id, token))
 
 	db.Exec("UPDATE users SET ssid=?1 WHERE pass=?2 AND email=?3", hashIt(ssid), hashIt(fmt.Sprintf("%s%d", sgIn.Password, token)), sgIn.Email)
 
