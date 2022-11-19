@@ -52,19 +52,20 @@
     </nav>
     <div id="posts">
 
-        {{range .Posts}}
-        <a href="/post?id={{.ID}}">
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="{{.Mineature}}" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">{{.Title}}</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
+        <div class="card-deck">
+            {{range .Posts}}
+            <a href="/post?id={{.ID}}">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{.Mineature}}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{.Title}}</h5>
+                        <p class="card-text">{{.Introduction}}</p>
+                    </div>
                 </div>
-            </div>
         </a>
 
         {{end}}
+    </div>
     </div>
 
     <div id="pages">
