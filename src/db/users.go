@@ -16,7 +16,7 @@ func SignUp(sUp core.SignUp) (err error) {
 
 	token := rand.Int() + int(time.Now().Unix())
 	password := hashIt(fmt.Sprintf("%s%d", sUp.Password, token))
-	_, err = db.Exec("INSERT INTO users(privileges,username,email,pass,token) VALUES(?1,?2,?3,?4,?5)",
+	_, err = db.Exec("INSERT INTO users privileges,username,email,pass,token VALUES ?1,?2,?3,?4,?5 ",
 		sUp.Privileges,
 		sUp.Username,
 		sUp.Email,

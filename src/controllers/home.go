@@ -28,14 +28,20 @@ func Setup() {
 }
 func RenderHome(w http.ResponseWriter, r *http.Request) {
 	var api core.ApiInformation
-	api.Logged = true
+	api.Logged = false
 
 	ssid, err := r.Cookie("ssid")
 
-	if err != nil {
-		api.Logged = false
-	} else if priv, _ := db.Existence(ssid.Value); priv == 0 {
-		api.Logged = false
+	if err == nil {
+		if priv, _ := db.Existence(ssid.Value); priv != 0 {
+			api.Logged = true
+		} else {
+			r.AddCookie(&http.Cookie{
+				Name:   "ssid",
+				Value:  "",
+				MaxAge: -1,
+			})
+		}
 	}
 
 	values := r.URL.Query()

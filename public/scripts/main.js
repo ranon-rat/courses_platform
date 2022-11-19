@@ -78,7 +78,8 @@ async function requestSign(path, data) {
 }
 document.getElementById("signInForm").addEventListener("submit", function (e) {
     e.preventDefault();
-    let data = getData(e.target);
+    let data = {};
+    getData(e.target).forEach((value, key) => data[key] = value);
     requestSign('sign-in', data).then((resp) => {
         switch (resp.status) {
             case 401:
@@ -91,7 +92,8 @@ document.getElementById("signInForm").addEventListener("submit", function (e) {
 });
 document.getElementById("signUpForm").addEventListener("submit", function (e) {
     e.preventDefault();
-    let data = JSON.parse(JSON.stringify(getData(e.target)));
+    let data = {};
+    getData(e.target).forEach((value, key) => data[key] = value);
     data['privileges'] = 3;
     requestSign('sign-up', data).then((resp) => {
         switch (resp.status) {

@@ -52,14 +52,20 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 		Introduction: post.Introduction,
 	}
 
-	api.Logged = true
+	api.Logged = false
 
 	ssid, err := r.Cookie("ssid")
 
-	if err != nil {
-		api.Logged = false
-	} else if priv, _ := db.Existence(ssid.Value); priv == 0 {
-		api.Logged = false
+	if err == nil {
+		if priv, _ := db.Existence(ssid.Value); priv != 0 {
+			api.Logged = true
+		} else {
+			r.AddCookie(&http.Cookie{
+				Name:   "ssid",
+				Value:  "",
+				MaxAge: -1,
+			})
+		}
 	}
 
 	if api.Content == "" {

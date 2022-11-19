@@ -109,7 +109,11 @@ async function requestSign(path: string, data: object) {
 document.getElementById("signInForm")!.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    let data = getData(e.target as HTMLFormElement);
+    let data: { [key: string]: any } = {};
+
+    getData(e.target as HTMLFormElement).forEach(
+        (value, key) => data[key] = value
+    );
 
     requestSign('sign-in', data).then((resp) => {
         switch (resp.status) {
@@ -126,7 +130,12 @@ document.getElementById("signInForm")!.addEventListener("submit", function (e) {
 document.getElementById("signUpForm")!.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    let data = JSON.parse(JSON.stringify(getData(e.target as HTMLFormElement)));
+    let data: { [key: string]: any } = {};
+
+    getData(e.target as HTMLFormElement).forEach(
+        (value, key) => data[key] = value
+    );
+
     data['privileges'] = 3;
 
     requestSign('sign-up', data).then((resp) => {
