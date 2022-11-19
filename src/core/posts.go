@@ -1,10 +1,11 @@
 package core
 
 type ApiPostPublication struct {
-	Content   string `json:"content"`
-	Title     string `json:"title"`
-	Mineature string `json:"mineature"`
-	Topic     string `json:"topic"`
+	Content      string `json:"content"`
+	Title        string `json:"title"`
+	Mineature    string `json:"mineature"`
+	Topic        string `json:"topic"`
+	Introduction string `json:"introduction"`
 }
 
 type ApiGetPublication struct {

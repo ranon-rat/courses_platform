@@ -16,7 +16,7 @@ func NewPost(post core.ApiPostPublication, id int) {
 	insert := "INSERT INTO publications (title,content,mineature,author,topic,datePublication,introduction) VALUES (?1,?2,?3,?4,?5,?6)"
 
 	_, err := db.Exec(insert,
-		post.Title, post.Content, post.Mineature, id, post.Topic, time.Now().Unix(), post.Content[:255%len(post.Content)])
+		post.Title, post.Content, post.Mineature, id, post.Topic, time.Now().Unix(), post.Introduction)
 
 	fmt.Println(err)
 }

@@ -48,8 +48,6 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 			}
 
 		}
-	case "GET":
-		// para el admin la interfaz sera un tanto diferente al agregar algun nuevo profesor
 
 	default:
 		http.Error(w, "Not implemented yet", http.StatusUnauthorized)

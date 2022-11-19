@@ -72,11 +72,12 @@ for (const tag of ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']) {
 }
 
 const sidebar = document.getElementById('sidebar')!;
-
+try {
 for (const [id, title] of titles) {
     sidebar.innerHTML += `
         <li class="list-group-item">
             <a class="list-group-item list-group-item-action" href="#${id}">${title}</a>
         </li>
     `;
-}
+}}
+catch{}

@@ -36,10 +36,7 @@ func RenderHome(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	if values.Has("topics") {
-		api.Topics = (db.GetTopics())
-
-	}
+	api.Topics = db.GetTopics()
 
 	page, err := strconv.Atoi(values.Get("page"))
 	if err != nil {
@@ -47,7 +44,7 @@ func RenderHome(w http.ResponseWriter, r *http.Request) {
 	}
 	api.Posts = (db.GetPosts(page, topic))
 	api.Quantity = db.PublicationsSize(topic)
-	to := (api.Quantity / core.PostPerPage)
+	to := ((api.Quantity) / core.PostPerPage)
 	if to > 8 {
 		to = page + 8
 	}
@@ -56,6 +53,7 @@ func RenderHome(w http.ResponseWriter, r *http.Request) {
 	api.To = to + 1
 	file, _ := os.ReadFile("public/views/home.html")
 	template := template.Must(tmp.Parse(string(file)))
+
 	template.Execute(w, api)
 
 }
