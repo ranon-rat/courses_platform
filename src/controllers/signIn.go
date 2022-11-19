@@ -38,7 +38,10 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 					Expires: time.Now().AddDate(1, 0, 0),
 				}
 				http.SetCookie(w, cookie)
+				return
 			}
+			http.Error(w, "wrong password or the account does not exist", http.StatusBadRequest)
+
 			return
 		}
 		http.Error(w, "you are already logged in", http.StatusBadRequest)
