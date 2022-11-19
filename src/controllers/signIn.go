@@ -21,23 +21,25 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "something is wrong", http.StatusBadRequest)
 			return
 		}
+		exist := 0
 		ssid, err := r.Cookie("ssid")
-		priv := core.Pupil
 
 		if err == nil {
-			priv, _ = db.Existence(ssid.Value)
+			exist, _, _ = db.Existence(ssid.Value)
+
 		}
 
-		if priv == 0 || err != nil {
+		if exist == 0 || err != nil {
+			if db.ExistenceWithPass(sign) > 0 {
+				ssid := db.SignIn(sign)
 
-			ssid := db.SignIn(sign)
-
-			cookie := &http.Cookie{
-				Name:    "ssid",
-				Value:   ssid,
-				Expires: time.Now().AddDate(1, 0, 0),
+				cookie := &http.Cookie{
+					Name:    "ssid",
+					Value:   ssid,
+					Expires: time.Now().AddDate(1, 0, 0),
+				}
+				http.SetCookie(w, cookie)
 			}
-			http.SetCookie(w, cookie)
 			return
 		}
 		http.Error(w, "you are already logged in", http.StatusBadRequest)

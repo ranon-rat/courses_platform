@@ -26,8 +26,8 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	priv, id := db.Existence(ssid.Value)
-	if priv == 0 {
+	exist, priv, id := db.Existence(ssid.Value)
+	if exist == 0 {
 		http.Error(w, "you doesnt have an account", http.StatusNotFound)
 		return
 	}

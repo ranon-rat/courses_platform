@@ -34,7 +34,7 @@ func RenderHome(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		api.Logged = false
-	} else if priv, _ := db.Existence(ssid.Value); priv == 0 {
+	} else if exist, _, _ := db.Existence(ssid.Value); exist < 0 {
 		api.Logged = false
 	}
 

@@ -31,7 +31,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		priv, _ := db.Existence(ssid.Value)
+		_, priv, _ := db.Existence(ssid.Value)
 
 		if priv != core.Admin {
 			sign.Privileges = core.Pupil

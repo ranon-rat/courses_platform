@@ -39,13 +39,22 @@ func SignIn(sgIn core.SignIn) (ssid string) {
 
 	return
 }
+func ExistenceWithPass(sgIn core.SignIn) (how int) {
+	db := openDB()
+	defer db.Close()
+	token, id := 0, 0
+
+	db.QueryRow("SELECT token,id FROM users WHERE email=?1", sgIn.Email).Scan(&token, &id)
+	db.QueryRow("SELECT COUNT(*) FROM users WHERE pass=?1 AND email=?3", hashIt(fmt.Sprintf("%s%d", sgIn.Password, token)), sgIn.Email).Scan(&how)
+	return
+}
 
 // solo checo si el usuario ya a iniciado sesion, utilizo una cookie que se genera automaticamente al iniciar sesion
-func Existence(ssid string) (priv, id int) {
+func Existence(ssid string) (exist, priv, id int) {
 
 	db := openDB()
 	defer db.Close()
-	r := db.QueryRow("SELECT privileges,ID FROM users WHERE ssid=?1", Hash(ssid))
-	r.Scan(&priv, &id)
+	r := db.QueryRow("SELECT COUNT(*),privileges,ID FROM users WHERE ssid=?1", Hash(ssid))
+	r.Scan(&exist, &priv, &id)
 	return
 }
