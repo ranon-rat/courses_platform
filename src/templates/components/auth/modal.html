@@ -1,0 +1,9 @@
+{{define "@SignModal"}}
+    {{if not .Logged}}
+
+        {{template "@SignIn"}}
+
+        {{template "@SignUp"}}
+
+    {{end}}
+{{end}}

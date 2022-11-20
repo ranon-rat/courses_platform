@@ -1,0 +1,41 @@
+{{define "@HeaderNav"}}
+
+<div id="fake-navbar"></div>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0; width: 100%;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Course plataform</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+            aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+
+
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+            </ul>
+
+            <form class="" style="display: block;" autocomplete="off">
+                <div class="">
+                    <div class="">
+                        <input id="search" class="form-control me-2" type="search" placeholder="Search"
+                            aria-label="Search">
+                    </div>
+                    <div style="height: 0px;">
+                        <ul id="search-group" class="navbar-nav me-2"
+                            style="--bs-scroll-height: 100px; display: block;">
+                        </ul>
+                    </div>
+                </div>
+            </form>
+
+            {{template "@SignBar" . }}
+
+        </div>
+    </div>
+</nav>
+
+{{end}}

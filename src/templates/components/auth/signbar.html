@@ -1,0 +1,28 @@
+{{define "@SignBar"}}
+
+<ul class="navbar-nav my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+    {{if not .Logged}}
+
+    <li class="nav-item ms-2">
+        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#signInModel">
+            SignIn
+        </button>
+    </li>
+
+    <li class="nav-item ms-2">
+        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#signUpModel">
+            SignUp
+        </button>
+    </li>
+
+    {{else}}
+
+    <li class="nav-item ms-2">
+        <button onclick="signOut()" class="btn btn-outline-secondary" type="submit">SignOut</button>
+    </li>
+
+    {{end}}
+
+</ul>
+
+{{end}}

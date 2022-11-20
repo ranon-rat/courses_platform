@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"time"
@@ -10,6 +11,40 @@ import (
 	"github.com/bruh-boys/courses_platform/src/core"
 	"github.com/bruh-boys/courses_platform/src/db"
 )
+
+// Optimized.
+func SignUp2(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+
+		return
+	}
+
+	var data core.SignUp
+
+	// Decode the request body into the data variable.
+	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+
+		return
+	}
+
+	// Check if the email is already registered.
+	if ok, err := IsAlreadyRegistered(w, data.Email); err != nil || !ok {
+		log.Println(err)
+
+		return
+	}
+
+	// Create the user in the database.
+	if err := db.SignUp(data); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+}
 
 func SignUp(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().Unix())

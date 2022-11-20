@@ -2,9 +2,7 @@ package controllers
 
 import (
 	"net/http"
-	"os"
 	"strconv"
-	"text/template"
 
 	"github.com/bruh-boys/courses_platform/src/db"
 )
@@ -38,7 +36,6 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	file, _ := os.ReadFile("templates/post.html")
 	post := db.GetPost(id)
 
 	var api = Publication{
@@ -72,9 +69,14 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 		api.Content = "Post not found"
 	}
 
+	if err := Templates.ExecuteTemplate(w, "Post", api); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+
+	}
+
 	//stri := strings.Replace(string(file), "!#!", post.Content, 1)
-	template := template.Must(template.New("main").Parse(string(file)))
-	template.Execute(w, api)
+	//template := template.Must(template.New("main").Parse(string(file)))
+	//template.Execute(w, api)
 
 	//w.Write([]byte(stri))
 }
