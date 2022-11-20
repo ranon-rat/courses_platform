@@ -15,11 +15,11 @@
     {{template "@SignModal" . }}
     {{template "@HeaderNav" . }}
 
-    <div class="container-fluid post-container">
+    <div class="container post-container">
         <div id="posts" class="row p-sm-2 p-md-4 p-lg-5">
             {{range .Posts}}
 
-            <div class="col-3 card" style="width: 18rem;">
+            <div class="col-sm-1 col-md-4 col-lg-3 mt-2 mx-auto card" style="width: 18rem;">
                 <a href="/post?id={{.ID}}" style="text-decoration: none; color: black;">
                     <img src="{{.Mineature}}" class="card-img-top" alt="{{.Topic}}">
                     <div class="card-body">
