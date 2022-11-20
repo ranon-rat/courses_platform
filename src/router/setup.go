@@ -47,6 +47,7 @@ func SetupRouter(dirBase string, port string) (err error) {
 	router.HandleFunc("/sign-in", controllers.SignIn)
 	router.HandleFunc("/sign-up", controllers.SignUp)
 	router.HandleFunc("/api", controllers.ApiInformation)
+
 	router.HandleFunc("/new-post", controllers.NewPost)
 
 	router.HandleFunc("/post", controllers.GetPost)

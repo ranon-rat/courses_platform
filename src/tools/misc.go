@@ -6,8 +6,19 @@ import (
 	"time"
 )
 
+func CreateCookie(name, value string, w http.ResponseWriter) {
+	http.SetCookie(w, &http.Cookie{
+		Name:  name,
+		Value: value,
+	})
+}
+
 func RemoveCookie(name string, w http.ResponseWriter) {
-	w.Header().Add("Set-Cookie", (name + "=; Max-Age=-1"))
+	http.SetCookie(w, &http.Cookie{
+		Name:   name,
+		Value:  "",
+		MaxAge: -1,
+	})
 }
 
 func GenerateToken() int {

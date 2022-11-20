@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/bruh-boys/courses_platform/src/db"
+	"github.com/bruh-boys/courses_platform/src/middlewares"
 )
 
 type Publication struct {
@@ -17,6 +18,10 @@ type Publication struct {
 	Date         int
 	Topic        string
 	Introduction string
+}
+
+func GetPost2(w http.ResponseWriter, r *http.Request) {
+
 }
 
 func GetPost(w http.ResponseWriter, r *http.Request) {
@@ -51,18 +56,8 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 
 	api.Logged = false
 
-	ssid, err := r.Cookie("ssid")
-
-	if err == nil {
-		if exist, _, _ := db.Existence(ssid.Value); exist > 0 {
-			api.Logged = true
-		} else {
-			r.AddCookie(&http.Cookie{
-				Name:   "ssid",
-				Value:  "",
-				MaxAge: -1,
-			})
-		}
+	if middlewares.Authenticated(w, r) {
+		api.Logged = true
 	}
 
 	if api.Content == "" {
@@ -73,10 +68,4 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 
 	}
-
-	//stri := strings.Replace(string(file), "!#!", post.Content, 1)
-	//template := template.Must(template.New("main").Parse(string(file)))
-	//template.Execute(w, api)
-
-	//w.Write([]byte(stri))
 }

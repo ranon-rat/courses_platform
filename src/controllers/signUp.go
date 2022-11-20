@@ -2,18 +2,15 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
-	"math/rand"
 	"net/http"
-	"time"
 
 	"github.com/bruh-boys/courses_platform/src/core"
 	"github.com/bruh-boys/courses_platform/src/db"
 )
 
 // Optimized.
-func SignUp2(w http.ResponseWriter, r *http.Request) {
+func SignUp(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 
@@ -30,15 +27,24 @@ func SignUp2(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Check if the email is already registered.
-	if ok, err := IsAlreadyRegistered(w, data.Email); err != nil || !ok {
-		log.Println(err)
+	if ok, _ := IsAlreadyRegistered(w, data.Email); !ok {
+		http.Error(w, "Email is already registered", http.StatusNotFound)
 
 		return
 	}
 
 	// Create the user in the database.
 	if err := db.SignUp(data); err != nil {
+		http.Error(w, err.Error(), http.StatusConflict)
+		log.Println(err.Error())
+
+		return
+	}
+
+	// Sign in the user.
+	if _, err := SignInUser(w, core.SignIn{Email: data.Email, Password: data.Password}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Println(err.Error())
 
 		return
 	}
@@ -46,6 +52,7 @@ func SignUp2(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
+/*
 func SignUp(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().Unix())
 	switch r.Method {
@@ -79,3 +86,4 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not implemented yet", http.StatusUnauthorized)
 	}
 }
+*/

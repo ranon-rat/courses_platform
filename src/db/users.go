@@ -1,10 +1,6 @@
 package db
 
 import (
-	"fmt"
-	"math/rand"
-	"time"
-
 	"github.com/bruh-boys/courses_platform/src/core"
 	"github.com/bruh-boys/courses_platform/src/tools"
 )
@@ -35,26 +31,34 @@ func IsPasswordCorrect(email, pass string) (ok bool, err error) {
 	var database = openDB()
 	defer database.Close()
 
-	if ok, err = IsAlreadyRegistered(email); err != nil {
+	var token int
+
+	if ok, err = IsAlreadyRegistered(email); err != nil || !ok {
 		return false, err
 	}
 
-	if !ok {
-		return false, nil
+	if token, _, err = GetTokenAndId(email); err != nil {
+		return false, err
 	}
 
-	err = database.QueryRow(isPasswordCorrectQuery, email, pass).Scan(&ok)
+	err = database.QueryRow(
+		isPasswordCorrectQuery, email, tools.HashPassword(pass, token),
+	).Scan(&ok)
+
 	return
 }
 
-func SignUp2(data core.SignUp) (err error) {
+func SignUp(data core.SignUp) (err error) {
 	var database = openDB()
 	defer database.Close()
 
 	token := tools.GenerateToken()
 	pass := tools.HashPassword(data.Password, token)
 
-	_, err = database.Exec(signUpQuery, data.Privileges, data.Username, data.Email, pass, token)
+	_, err = database.Exec(
+		signUpQuery, 3, data.Username, data.Email, pass, token,
+	)
+
 	return
 }
 
@@ -66,7 +70,7 @@ func GetTokenAndId(email string) (token, id int, err error) {
 	return
 }
 
-func SignIn2(data core.SignIn) (ssid string, err error) {
+func SignIn(data core.SignIn) (ssid string, err error) {
 	var token, id int
 
 	if token, id, err = GetTokenAndId(data.Email); err != nil {
@@ -88,7 +92,7 @@ func SignIn2(data core.SignIn) (ssid string, err error) {
 // --------------------------------------------
 
 // el error seria en caso de que el correo se repitiera o algo parecido
-func SignUp(sUp core.SignUp) (err error) {
+/*func SignUp(sUp core.SignUp) (err error) {
 	db := openDB()
 
 	defer db.Close()
@@ -102,10 +106,10 @@ func SignUp(sUp core.SignUp) (err error) {
 		password,
 		token)
 	return
-}
+}*/
 
 // en caso de que el la contraseña no sea correcta debo de checar eso , aun que al no iniciar sesion seria una forma de ver eso, manejare eso por el cliente
-func SignIn(sgIn core.SignIn) (ssid string) {
+/*func SignIn(sgIn core.SignIn) (ssid string) {
 	db := openDB()
 	defer db.Close()
 	token, id := 0, 0
@@ -117,7 +121,8 @@ func SignIn(sgIn core.SignIn) (ssid string) {
 	db.Exec("UPDATE users SET ssid=?1 WHERE pass=?2 AND email=?3", hashIt(ssid), hashIt(fmt.Sprintf("%s%d", sgIn.Password, token)), sgIn.Email)
 
 	return
-}
+}*/
+/*
 func ExistenceWithPass(sgIn core.SignIn) (how int) {
 	db := openDB()
 	defer db.Close()
@@ -134,5 +139,27 @@ func Existence(ssid string) (exist, priv, id int) {
 	db := openDB()
 	defer db.Close()
 	db.QueryRow("SELECT COUNT(*),privileges,ID FROM users WHERE ssid=?1", Hash(ssid)).Scan(&exist, &priv, &id)
+	return
+}
+*/
+
+const (
+	isValidSesionQuery = "SELECT EXISTS(SELECT 1 FROM users WHERE ssid=?1)"
+	getSesionPrivQuery = "SELECT privileges,id FROM users WHERE ssid=?1"
+)
+
+func IsValidSesion(email string, ssid string) (valid bool, err error) {
+	var database = openDB()
+	defer database.Close()
+
+	err = database.QueryRow(isValidSesionQuery, email, ssid).Scan(&valid)
+	return
+}
+
+func GetSesion(ssid string) (priv, id int, err error) {
+	var database = openDB()
+	defer database.Close()
+
+	err = database.QueryRow(getSesionPrivQuery, tools.GenerateHash(ssid)).Scan(&priv, &id)
 	return
 }

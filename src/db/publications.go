@@ -7,18 +7,20 @@ import (
 	"github.com/bruh-boys/courses_platform/src/core"
 )
 
+const (
+	createPostQuery = "INSERT INTO publications(title,content,mineature,author,topic,datePublication,introduction) VALUES(?1,?2,?3,?4,?5,?6,?7)"
+)
+
 // los posts solo lo pueden hacer maestros o administradores
-func NewPost(post core.ApiPostPublication, id int) {
-	db := openDB()
-	defer db.Close()
+func CreatePost(post core.ApiPostPublication, id int) (err error) {
+	var database = openDB()
+	defer database.Close()
 
-	//sqlite3
-	insert := "INSERT INTO publications (title,content,mineature,author,topic,datePublication,introduction) VALUES (?1,?2,?3,?4,?5,?6,?7)"
+	_, err = database.Exec(createPostQuery,
+		post.Title, post.Content, post.Mineature, id, post.Topic, time.Now().Unix(), post.Introduction,
+	)
 
-	_, err := db.Exec(insert,
-		post.Title, post.Content, post.Mineature, id, post.Topic, time.Now().Unix(), post.Introduction)
-
-	fmt.Println(err)
+	return
 }
 
 // no requiere mucha explicacion , pero tambien se requiere usar en el frontend
