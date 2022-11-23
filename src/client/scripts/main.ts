@@ -136,8 +136,6 @@ document.getElementById("signUpForm")!.addEventListener("submit", function (e) {
         (value, key) => data[key] = value
     );
 
-    data['privileges'] = 3;
-
     requestSign('sign-up', data).then((resp) => {
         switch (resp.status) {
             case 409:
