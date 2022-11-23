@@ -90,11 +90,6 @@ type ApiPostPublication struct {
                     'Accept': 'application/json',
                 },
                 body: JSON.stringify(data)
-            }).then((resp) => {
-                switch (resp.status) {
-                    default:
-                        console.log(data)
-                }
             }).then(r => window.location.reload());
             
 
