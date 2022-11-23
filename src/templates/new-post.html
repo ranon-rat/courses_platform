@@ -1,40 +1,47 @@
+{{define "NewPost"}}
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>new post</title>
+    {{template "@Head" . }}
+
+    <title>Home</title>
+
+    <link rel="stylesheet" href="/public/styles/main.css">
 </head>
 
 <body>
-   
+    {{template "@SignModal" . }}
+    {{template "@HeaderNav" . }}
 
-                <form id="signInForm">
-                    <div class="modal-body">
-                        <!-- Email input -->
-                        <div class="form-outline mb-2">
-                            <input type="email" name="email" class="form-control" />
-                            <label class="form-label" for="email">Email</label>
-                        </div>
+    <form id="signInForm">
+        <div class="modal-body">
+            <!-- Email input -->
+            <div class="form-outline mb-2">
+                <input type="email" name="email" class="form-control" />
+                <label class="form-label" for="email">Email</label>
+            </div>
 
-                        <!-- Password input -->
-                        <div class="form-outline mb-2">
-                            <input type="password" name="password" class="form-control" />
-                            <label class="form-label" for="password">Password</label>
-                        </div>
-                    </div>
+            <!-- Password input -->
+            <div class="form-outline mb-2">
+                <input type="password" name="password" class="form-control" />
+                <label class="form-label" for="password">Password</label>
+            </div>
+        </div>
 
-                    <!-- Submit button -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Sign In</button>
-                    </div>
+        <!-- Submit button -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Sign In</button>
+        </div>
 
-                    <!--<button type="submit" class="btn btn-primary btn-block mb-3">Sign in</button>-->
-                </form>
-     
+        <!--<button type="submit" class="btn btn-primary btn-block mb-3">Sign in</button>-->
+    </form>
+
+    <script src="/public/scripts/main.js"></script>
 </body>
 
 </html>
+
+{{end}}
