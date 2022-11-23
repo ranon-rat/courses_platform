@@ -30,7 +30,6 @@ func RenderHome(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		page = 1
 	}
-	api.Posts = (db.GetPosts(page, topic))
 	api.Quantity = db.PublicationsSize(topic)
 	to := ((api.Quantity) / core.PostPerPage)
 	if to > 8 {
@@ -39,6 +38,8 @@ func RenderHome(w http.ResponseWriter, r *http.Request) {
 	// ye
 	api.Page = page
 	api.To = to + 1
+	api.Topic = topic
+
 	/*file, _ := os.ReadFile("templates/home.html")
 	template := template.Must(template.New("html").Funcs(tmpFuncs).Parse(string(file)))
 
