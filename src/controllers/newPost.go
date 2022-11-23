@@ -79,7 +79,9 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 
 		w.WriteHeader(http.StatusCreated)
 	case "GET":
-		if err := Templates.ExecuteTemplate(w, "New-post", nil); err != nil {
+		if err := Templates.ExecuteTemplate(w, "NewPost", core.ApiInformation{
+			Logged: true,
+		}); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 
 		}
