@@ -76,7 +76,7 @@ type ApiPostPublication struct {
                 async (value, key) => {
                     if (key=="content") {
 
-                        data[key] =  await  value.text()
+                        data[key]=await   value.text()
                         return
                     }
                     data[key] = value
