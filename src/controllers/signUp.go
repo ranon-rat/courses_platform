@@ -48,13 +48,6 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
-	fmt.Println(data)
-	// Sign in the user.
-
-	if err := db.SignUp(data); err != nil {
-		http.Error(w, "username or email are already registered", http.StatusConflict)
-		fmt.Println(err)
-	}
 
 	w.WriteHeader(http.StatusCreated)
 }
