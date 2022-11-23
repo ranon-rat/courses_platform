@@ -1,3 +1,2 @@
-rm -rf data/database.db
-touch data/database.db
-cat ./data/init.sql | sqlite3 ./data/database.db
+tsc -p tsconfig.json
+sass src/client/styles:public/styles
