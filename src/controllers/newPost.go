@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 
@@ -20,7 +22,6 @@ func ParseContent(content string) string {
 }
 
 func NewPost(w http.ResponseWriter, r *http.Request) {
-
 	var priv, id int
 	var err error
 
@@ -44,8 +45,11 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+
 	switch r.Method {
 	case "POST":
+		b, _ := io.ReadAll(r.Body)
+		fmt.Println(string(b))
 		var data core.ApiPostPublication
 
 		// Decode the request body into the data variable.
@@ -55,6 +59,7 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 
 			return
 		}
+		fmt.Println(data.Content, data)
 
 		if data.Content == "" || data.Title == "" || data.Introduction == "" {
 			http.Error(w, "Missing fields data", http.StatusBadRequest)

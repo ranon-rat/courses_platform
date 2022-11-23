@@ -28,53 +28,52 @@ async function search(query: string): Promise<Response['publications']> {
         keys.every((key) => item.title.toLowerCase().includes(key))
     )
 }
+    const input = document.getElementById('search')!
 
-const input = document.getElementById('search')!
+    input.addEventListener('input', function () {
+        const group = document.getElementById('search-group')!;
+        group.innerHTML = '';
 
-input.addEventListener('input', function () {
-    const group = document.getElementById('search-group')!;
-    group.innerHTML = '';
+        // @ts-ignore
+        const query = this.value.toLowerCase();
 
-    // @ts-ignore
-    const query = this.value.toLowerCase();
+        if (query.length < 2) return group.innerHTML = '';
 
-    if (query.length < 2) return group.innerHTML = '';
+        search(query).then((data) => {
+            for (let i = 0; i < data.length && i < 5; i++) {
+                const item = data[i];
 
-    search(query).then((data) => {
-        for (let i = 0; i < data.length && i < 5; i++) {
-            const item = data[i];
-
-            group.innerHTML += `
+                group.innerHTML += `
                 <li class="form-control p-0 m-1">
                     <a class="nav-link active" aria-current="page" href="/?id=${item.id}">${item.title}</a>
                 </li>
             `;
-        }
+            }
+        })
     })
-})
 
-input.addEventListener('blur', function () {
-    const group = document.getElementById('search-group')!;
-    setTimeout(() => group.innerHTML = '', 200);
-})
+    input.addEventListener('blur', function () {
+        const group = document.getElementById('search-group')!;
+        setTimeout(() => group.innerHTML = '', 200);
+    })
 
-// tag, title
-const query = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-const sidebar = document.getElementById('sidebar');
+    // tag, title
+    const query = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    const sidebar = document.getElementById('sidebar');
 
-if (sidebar) for (const item of query) {
-    const title = item.textContent || '';
+    if (sidebar) for (const item of query) {
+        const title = item.textContent || '';
 
-    if (item.classList.contains('modal-title')) continue;
+        if (item.classList.contains('modal-title')) continue;
 
-    item.setAttribute('id', title);
+        item.setAttribute('id', title);
 
-    sidebar.innerHTML += `
+        sidebar.innerHTML += `
         <li class="list-group-item">
             <a class="list-group-item list-group-item-action" href="#${title}">${title}</a>
         </li>
     `;
-}
+    }
 
 
 function signOut() {
