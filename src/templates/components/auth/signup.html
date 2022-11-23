@@ -1,0 +1,42 @@
+{{define "@SignUp"}}
+
+<div class="modal fade" id="signUpModel" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signUpModalLabel">SignIn</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form id="signUpForm">
+                <div class="modal-body">
+                    <!-- Username input -->
+                    <div class="form-outline mb-2">
+                        <input type="text" name="username" class="form-control" />
+                        <label class="form-label" for="username">Username</label>
+                    </div>
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-2">
+                        <input type="email" name="email" class="form-control" />
+                        <label class="form-label" for="email">Email</label>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-2">
+                        <input type="password" name="password" class="form-control" />
+                        <label class="form-label" for="password">Password</label>
+                    </div>
+
+                    <!-- Submit button -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{end}}

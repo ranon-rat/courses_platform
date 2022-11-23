@@ -2,12 +2,29 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/bruh-boys/courses_platform/src/router"
 )
 
 func main() {
-	//fmt.Println(db.Hash("1234"))
+	var port string
+	var dir string
+	var err error
 
-	log.Println(router.SetupRouter())
+	if port = os.Getenv("PORT"); port == "" {
+		log.Println("No PORT environment variable detected. Setting to default 8080.")
+
+		port = "8080"
+	}
+
+	if dir, err = os.Getwd(); err != nil {
+		log.Println("Error getting working directory.")
+		log.Panicln(err)
+	}
+
+	if err = router.SetupRouter(dir, port); err != nil {
+		log.Panicln(err)
+	}
+
 }

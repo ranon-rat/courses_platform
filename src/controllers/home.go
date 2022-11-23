@@ -1,31 +1,19 @@
 package controllers
 
 import (
-	"html/template"
 	"net/http"
-	"os"
 	"strconv"
 
 	"github.com/bruh-boys/courses_platform/src/core"
 	"github.com/bruh-boys/courses_platform/src/db"
+	"github.com/bruh-boys/courses_platform/src/middlewares"
 )
 
 func RenderHome(w http.ResponseWriter, r *http.Request) {
 	var api core.ApiInformation
-	api.Logged = false
 
-	ssid, err := r.Cookie("ssid")
-
-	if err == nil {
-		if exist, _, _ := db.Existence(ssid.Value); exist > 0 {
-			api.Logged = true
-		} else {
-			r.AddCookie(&http.Cookie{
-				Name:   "ssid",
-				Value:  "",
-				MaxAge: -1,
-			})
-		}
+	if middlewares.Authenticated(w, r) {
+		api.Logged = true
 	}
 
 	values := r.URL.Query()
@@ -51,9 +39,14 @@ func RenderHome(w http.ResponseWriter, r *http.Request) {
 	// ye
 	api.Page = page
 	api.To = to + 1
-	file, _ := os.ReadFile("templates/home.html")
+	/*file, _ := os.ReadFile("templates/home.html")
 	template := template.Must(template.New("html").Funcs(tmpFuncs).Parse(string(file)))
 
-	template.Execute(w, api)
+	template.Execute(w, api)*/
+
+	if err := Templates.ExecuteTemplate(w, "Home", api); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+
+	}
 
 }

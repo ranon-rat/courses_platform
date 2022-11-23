@@ -1,0 +1,44 @@
+{{define "Home"}}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{template "@Head" . }}
+
+    <title>Home</title>
+
+    <link rel="stylesheet" href="/public/styles/main.css">
+</head>
+
+<body>
+    {{template "@SignModal" . }}
+    {{template "@HeaderNav" . }}
+
+    <div class="container post-container">
+        <div id="posts" class="row p-sm-2 p-md-4 p-lg-5">
+            {{range .Posts}}
+
+            <div class="col-sm-1 col-md-4 col-lg-3 mt-2 mx-auto card" style="width: 18rem;">
+                <a href="/post?id={{.ID}}" style="text-decoration: none; color: black;">
+                    <img src="{{.Mineature}}" class="card-img-top" alt="{{.Topic}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{.Title}}</h5>
+                        <p class="card-text">{{.Introduction}}</p>
+
+                    </div>
+                </a>
+            </div>
+
+            {{end}}
+        </div>
+    </div>
+
+    
+
+    <script src="/public/scripts/main.js"></script>
+</body>
+
+</html>
+
+{{end}}
