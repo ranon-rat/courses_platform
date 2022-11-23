@@ -2,8 +2,11 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
 
 	"github.com/bruh-boys/courses_platform/src/core"
 	"github.com/bruh-boys/courses_platform/src/db"
@@ -11,6 +14,10 @@ import (
 
 // Optimized.
 func SignUp(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.Method)
+
+	rand.Seed(time.Now().Unix())
+
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 
@@ -40,13 +47,12 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
-
+	fmt.Println(data)
 	// Sign in the user.
-	if _, err := SignInUser(w, core.SignIn{Email: data.Email, Password: data.Password}); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Println(err.Error())
 
-		return
+	if err := db.SignUp(data); err != nil {
+		http.Error(w, "username or email are already registered", http.StatusConflict)
+		fmt.Println(err)
 	}
 
 	w.WriteHeader(http.StatusCreated)

@@ -20,11 +20,6 @@ func ParseContent(content string) string {
 }
 
 func NewPost(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-
-		return
-	}
 
 	var priv, id int
 	var err error
@@ -44,42 +39,52 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if priv < 1 || priv > 3 {
+	if priv < 1 || priv > 2 {
 		http.Error(w, "You are not authorized to view this page.", http.StatusUnauthorized)
 
 		return
 	}
+	switch r.Method {
+	case "POST":
+		var data core.ApiPostPublication
 
-	var data core.ApiPostPublication
+		// Decode the request body into the data variable.
+		if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			log.Println(err.Error())
 
-	// Decode the request body into the data variable.
-	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		log.Println(err.Error())
+			return
+		}
 
-		return
+		if data.Content == "" || data.Title == "" || data.Introduction == "" {
+			http.Error(w, "Missing fields data", http.StatusBadRequest)
+
+			return
+		}
+
+		if data.Mineature == "" || data.Topic == "" {
+			http.Error(w, "Missing fields data", http.StatusBadRequest)
+
+			return
+		}
+
+		data.Content = ParseContent(data.Content)
+
+		if err := db.CreatePost(data, id); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			log.Println(err.Error())
+
+			return
+		}
+
+		w.WriteHeader(http.StatusCreated)
+	case "GET":
+		if err := Templates.ExecuteTemplate(w, "new-post", nil); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+
+		}
+	default:
+		http.Error(w, "method not allowed", http.StatusUnauthorized)
 	}
 
-	if data.Content == "" || data.Title == "" || data.Introduction == "" {
-		http.Error(w, "Missing fields data", http.StatusBadRequest)
-
-		return
-	}
-
-	if data.Mineature == "" || data.Topic == "" {
-		http.Error(w, "Missing fields data", http.StatusBadRequest)
-
-		return
-	}
-
-	data.Content = ParseContent(data.Content)
-
-	if err := db.CreatePost(data, id); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Println(err.Error())
-
-		return
-	}
-
-	w.WriteHeader(http.StatusCreated)
 }
