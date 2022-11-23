@@ -8,7 +8,7 @@ import (
 
 func Authenticated(w http.ResponseWriter, r *http.Request) bool {
 	if ssid, err := r.Cookie("ssid"); err == nil {
-		if priv, _, _ := db.GetSesion(ssid.Value); priv > 0 || priv < 3 {
+		if priv, _, _ := db.GetSession(ssid.Value); priv > 0 || priv < 3 {
 
 			return true
 		}

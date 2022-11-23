@@ -144,22 +144,21 @@ func Existence(ssid string) (exist, priv, id int) {
 */
 
 const (
-	isValidSesionQuery = "SELECT EXISTS(SELECT 1 FROM users WHERE ssid=?1)"
-	getSesionPrivQuery = "SELECT privileges,id FROM users WHERE ssid=?1"
+	isValidSessionQuery = "SELECT EXISTS(SELECT 1 FROM users WHERE ssid=?1&& email=?2)"
+	getSessionPrivQuery = "SELECT privileges,ID FROM users WHERE ssid=?1"
 )
 
 func IsValidSesion(email string, ssid string) (valid bool, err error) {
 	var database = openDB()
 	defer database.Close()
 
-	err = database.QueryRow(isValidSesionQuery, email, ssid).Scan(&valid)
+	err = database.QueryRow(isValidSessionQuery, ssid, email).Scan(&valid)
 	return
 }
 
-func GetSesion(ssid string) (priv, id int, err error) {
+func GetSession(ssid string) (priv, id int, err error) {
 	var database = openDB()
 	defer database.Close()
-
-	err = database.QueryRow(getSesionPrivQuery, tools.GenerateHash(ssid)).Scan(&priv, &id)
+	err = database.QueryRow(getSessionPrivQuery, tools.GenerateHash(ssid)).Scan(&priv, &id)
 	return
 }

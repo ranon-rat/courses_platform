@@ -32,8 +32,8 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 
 	ssid, _ := r.Cookie("ssid")
 
-	if priv, id, err = db.GetSesion(ssid.Value); err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+	if priv, id, err = db.GetSession(ssid.Value); err != nil {
+		http.Error(w, "Internal server error your gay", http.StatusInternalServerError)
 		log.Println(err.Error())
 
 		return
@@ -79,7 +79,7 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 
 		w.WriteHeader(http.StatusCreated)
 	case "GET":
-		if err := Templates.ExecuteTemplate(w, "new-post", nil); err != nil {
+		if err := Templates.ExecuteTemplate(w, "New-post", nil); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 
 		}

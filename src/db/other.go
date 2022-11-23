@@ -5,9 +5,6 @@ import (
 	"log"
 
 	_ "github.com/mattn/go-sqlite3"
-
-	"crypto/sha256"
-	"encoding/hex"
 )
 
 func Request() (database *sql.DB) {
@@ -31,11 +28,3 @@ func openDB() *sql.DB {
 }
 
 // sirve para generar un hash unico y no exponerla contraseña y hacer mas complicado el poder hacer fuerza bruta para explotarla
-
-func hashIt(pass string) string {
-	return hex.EncodeToString(sha256.New().Sum([]byte(pass)))
-}
-
-func Hash(s string) string {
-	return hashIt(s)
-}
