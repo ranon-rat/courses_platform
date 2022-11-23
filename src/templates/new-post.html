@@ -66,12 +66,12 @@ type ApiPostPublication struct {
             return data;
         }
 
-        document.getElementById("new-post").addEventListener("submit",async function (e) {
+        document.getElementById("new-post").addEventListener("submit", function (e) {
             e.preventDefault();
 
             let data = {};
 
-           await getData(e.target).forEach(
+            getData(e.target).forEach(
 
                 async (value, key) => {
                     if (key=="content") {
@@ -83,7 +83,7 @@ type ApiPostPublication struct {
                 }
             );
             console.log(data)
-            await fetch("/new-post", {
+            fetch("/new-post", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
