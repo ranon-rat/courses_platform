@@ -25,10 +25,7 @@ var TemplateFuncs = template.FuncMap{
 		rows := db.GetPostsRows(page, topic)
 		go func() {
 			for rows.Next() {
-				var post core.ApiGetPublication
-				rows.Scan(&post.ID, &post.Title, &post.Mineature, &post.Author, &post.Date, &post.Introduction)
-				ch <- post
-
+				ch <- db.ScanRowPost(rows)
 			}
 			close(ch)
 		}()

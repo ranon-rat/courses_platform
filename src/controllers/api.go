@@ -32,7 +32,10 @@ func ApiInformation(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "that value is not an integer", 400)
 			return
 		}
-		api.Posts = (db.GetPosts(page, topic))
+		rows := db.GetPostsRows(page, topic)
+		for rows.Next() {
+			api.Posts = append(api.Posts, db.ScanRowPost(rows))
+		}
 	}
 
 	if values.Has("size") {

@@ -32,22 +32,8 @@ func GetPost(id int) (post core.ApiGetPublication) {
 	return
 }
 
-// esto es para lo que seria la pagina principal donde se pueden ver otros proyectos y otras cosas
-// esto se va a usar en el frontend
-func GetPosts(page int, topic string) (posts []core.ApiGetPublication) {
-	db := openDB()
-
-	defer db.Close()
-	id := PublicationsGetElement(topic, page)
-	rows, err := db.Query("SELECT id,title,mineature,author,datePublication,introduction FROM publications WHERE ID<=?1 ORDER BY ID DESC LIMIT ?2", id, core.PostPerPage)
-	if err != nil {
-		fmt.Println("someting is wrong")
-	}
-	for rows.Next() {
-		var post core.ApiGetPublication
-		rows.Scan(&post.ID, &post.Title, &post.Mineature, &post.Author, &post.Date, &post.Introduction)
-		posts = append(posts, post)
-	}
+func ScanRowPost(rows *sql.Rows) (post core.ApiGetPublication) {
+	rows.Scan(&post.ID, &post.Title, &post.Mineature, &post.Author, &post.Date, &post.Introduction)
 	return
 }
 
