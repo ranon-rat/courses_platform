@@ -1,6 +1,8 @@
 package db
 
 import (
+	"fmt"
+
 	"github.com/bruh-boys/courses_platform/src/core"
 	"github.com/bruh-boys/courses_platform/src/tools"
 )
@@ -148,6 +150,8 @@ const (
 	getSessionPrivQuery = "SELECT privileges,ID FROM users WHERE ssid=?1"
 )
 
+var howMany = 0
+
 func IsValidSesion(email string, ssid string) (valid bool, err error) {
 	var database = openDB()
 	defer database.Close()
@@ -159,6 +163,8 @@ func IsValidSesion(email string, ssid string) (valid bool, err error) {
 func GetSession(ssid string) (priv, id int, err error) {
 	var database = openDB()
 	defer database.Close()
+	fmt.Println(howMany)
+	howMany++
 	err = database.QueryRow(getSessionPrivQuery, tools.GenerateHash(ssid)).Scan(&priv, &id)
 	return
 }
