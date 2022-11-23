@@ -10,32 +10,6 @@ import (
 	"github.com/bruh-boys/courses_platform/src/db"
 )
 
-var tmpFuncs = template.FuncMap{
-	"loop": func(from, to int) <-chan int {
-		ch := make(chan int)
-		go func() {
-			for i := from; i <= to; i++ {
-				ch <- i
-			}
-			close(ch)
-		}()
-		return ch
-	},
-	"posts": func(topic string, page int) <-chan core.ApiGetPublication {
-		ch := make(chan core.ApiGetPublication)
-		rows := db.GetPostsRows(page, topic)
-		go func() {
-			for rows.Next() {
-				var post core.ApiGetPublication
-				rows.Scan(&post.ID, &post.Title, &post.Mineature, &post.Author, &post.Date, &post.Introduction)
-				ch <- post
-			}
-			close(ch)
-		}()
-		return ch
-	},
-}
-
 func RenderHome(w http.ResponseWriter, r *http.Request) {
 	var api core.ApiInformation
 	api.Logged = false
