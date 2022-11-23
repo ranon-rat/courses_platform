@@ -66,24 +66,22 @@ type ApiPostPublication struct {
             return data;
         }
 
-        document.getElementById("new-post").addEventListener("submit", function (e) {
+        document.getElementById("new-post").addEventListener("submit",async function (e) {
             e.preventDefault();
 
             let data = {};
 
-            getData(e.target).forEach(
+           await getData(e.target).forEach(
 
-                async (value, key) => {
-                    if (key=="content") {
+                (value, key) => {
 
-                        data[key]=await   value.text()
-                        return
-                    }
                     data[key] = value
                 }
             );
+            data["content"]=await data["content"].text()
             console.log(data)
-            fetch("/new-post", {
+            alert("yep")
+           await fetch("/new-post", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -91,7 +89,7 @@ type ApiPostPublication struct {
                 },
                 body: JSON.stringify(data)
             }).then(r => window.location.reload());
-            
+
 
 
         });

@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 
@@ -48,8 +47,7 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "POST":
-		b, _ := io.ReadAll(r.Body)
-		fmt.Println(string(b))
+
 		var data core.ApiPostPublication
 
 		// Decode the request body into the data variable.
