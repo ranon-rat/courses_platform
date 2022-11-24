@@ -16,8 +16,30 @@ func RenderHome(w http.ResponseWriter, r *http.Request) {
 		api.Logged = true
 	}
 
+	var err error = nil
+
+	if ssid, err := r.Cookie("ssid"); err == nil {
+		priv := 0
+
+		if priv, _, err = db.GetSession(ssid.Value); err != nil {
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
+
+			return
+		}
+
+		if priv > 0 && priv < 3 {
+			api.Admin = true
+		}
+	}
+
 	values := r.URL.Query()
 	topic := "any"
+
+	if !values.Has("id") {
+		http.Redirect(w, r, "/?id=1", http.StatusTemporaryRedirect)
+
+		return
+	}
 
 	if values.Has("topic") {
 		topic = values.Get("topic")

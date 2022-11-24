@@ -15,7 +15,7 @@ func main() {
 	if port = os.Getenv("PORT"); port == "" {
 		log.Println("No PORT environment variable detected. Setting to default 8080.")
 
-		port = "8080"
+		port = "3000"
 	}
 
 	if dir, err = os.Getwd(); err != nil {

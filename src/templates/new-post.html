@@ -5,96 +5,50 @@
 <html lang="en">
 
 <head>
-
     {{template "@Head" . }}
 
     <title>new post</title>
-
+    <link rel="stylesheet" href="/public/styles/main.css">
 </head>
 
 <body>
+    {{template "@SignModal" . }}
+    {{template "@HeaderNav" . }}
 
-    <!--
-
-type ApiPostPublication struct {
-	Content      string `json:"content"`
-	Title        string `json:"title"`
-	Mineature    string `json:"mineature"`
-	Topic        string `json:"topic"`
-	Introduction string `json:"introduction"`
-}
-    -->
-    <form id="new-post">
-        <div class="modal-body">
-            <!-- Email input -->
-            <div class="form-outline mb-2">
-                <input type="text" name="title" class="form-control" />
-                <label class="form-label" for="title">Title</label>
-            </div>
-
-            <!-- content input -->
-            <div class="form-outline mb-2">
-                <input type="file" name="content" class="form-control" />
-                <label class="form-label" for="content">content</label>
-            </div>
-            <div class="form-outline mb-2">
-                <input type="url" name="mineature" class="form-control" />
-                <label class="form-label" for="mineature">mineature</label>
-            </div>
-            <div class="form-outline mb-2">
-                <input type="text" name="topic" class="form-control" />
-                <label class="form-label" for="topic">topic</label>
-            </div>
-            <div class="form-outline mb-2">
-                <input type="text" name="introduction" class="form-control" />
-                <label class="form-label" for="introduction">introduction</label>
-            </div>
+    <div class="container p-md-3 mt-4">
+        <div class="container p-md-3">
+            <form id="new-post" class="row g-3">
+                <div class="row m-sm-2">
+                    <input type="text" name="title" class="form-control" />
+                    <label class="form-label" for="title">Title</label>
+                </div>
+                <div class="row m-sm-2">
+                    <input type="url" name="mineature" class="form-control" />
+                    <label class="form-label" for="mineature">Mineature</label>
+                </div>
+                <div class="row m-sm-2">
+                    <input type="text" name="introduction" class="form-control" />
+                    <label class="form-label" for="introduction">Introduction</label>
+                </div>
+                <div class="row m-sm-2">
+                    <input type="file" name="content" class="form-control" />
+                    <label class="form-label" for="content">Content</label>
+                </div>
+                <div class="row m-sm-2">
+                    <input type="text" name="topic" class="form-control" />
+                    <label class="form-label" for="topic">Topic</label>
+                </div>
+                <div class="row m-sm-2">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
         </div>
+    </div>
 
-        <!-- Submit button -->
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">post</button>
-        </div>
-
-        <!--<button type="submit" class="btn btn-primary btn-block mb-3">Sign in</button>-->
-    </form>
-
-    <script>
-        function getData(form) {
-            const data = new FormData(form);
-
-            return data;
-        }
-
-        document.getElementById("new-post").addEventListener("submit",async function (e) {
-            e.preventDefault();
-
-            let data = {};
-
-           await getData(e.target).forEach(
-
-                (value, key) => {
-
-                    data[key] = value
-                }
-            );
-            data["content"]=await data["content"].text()
-            console.log(data)
-            alert("yep")
-           await fetch("/new-post", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify(data)
-            }).then(r => window.location.reload());
-
-
-
-        });
-
-    </script>
+    <script src="/public/scripts/main.js" ></script>
+    
+    <script src="/public/scripts/home.js" type="module"></script>
+    <script src="/public/scripts/npost.js" type="module"></script>
 </body>
 
 </html>

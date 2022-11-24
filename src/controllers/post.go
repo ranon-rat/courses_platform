@@ -9,6 +9,7 @@ import (
 )
 
 type Publication struct {
+	Admin        bool
 	Logged       bool
 	ID           string
 	Content      string
@@ -54,10 +55,22 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 		Introduction: post.Introduction,
 	}
 
-	api.Logged = false
-
 	if middlewares.Authenticated(w, r) {
 		api.Logged = true
+	}
+
+	if ssid, err := r.Cookie("ssid"); err == nil {
+		priv := 0
+
+		if priv, _, err = db.GetSession(ssid.Value); err != nil {
+			http.Error(w, "Internal server error.", http.StatusInternalServerError)
+
+			return
+		}
+
+		if priv > 0 && priv < 3 {
+			api.Admin = true
+		}
 	}
 
 	if api.Content == "" {

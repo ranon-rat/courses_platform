@@ -17,17 +17,3 @@ func Authenticated(w http.ResponseWriter, r *http.Request) bool {
 
 	return false
 }
-
-// This is not necessary, because mux router not allow to acesss single middleware.
-func Auth(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if !Authenticated(w, r) {
-			http.Error(w, "You are not authorized to view this page.", http.StatusUnauthorized)
-
-			return
-		}
-
-		next.ServeHTTP(w, r)
-	})
-
-}

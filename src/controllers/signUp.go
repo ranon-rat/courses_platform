@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -14,8 +13,6 @@ import (
 
 // Optimized.
 func SignUp(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.Method)
-
 	rand.Seed(time.Now().Unix())
 
 	if r.Method != "POST" {
@@ -45,6 +42,17 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	if err := db.SignUp(data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		log.Println(err.Error())
+
+		return
+	}
+
+	// Sign in the user.
+	if _, err := SignInUser(w, core.SignIn{
+		Password: data.Password,
+		Email:    data.Email,
+	}); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Println("SignInUser:", err)
 
 		return
 	}

@@ -20,6 +20,7 @@ type ApiGetPublication struct {
 }
 
 type ApiInformation struct {
+	Admin    bool
 	Logged   bool
 	Page     int
 	To       int

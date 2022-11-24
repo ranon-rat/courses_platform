@@ -26,6 +26,7 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 
 	if ok := middlewares.Authenticated(w, r); !ok {
 		http.Error(w, "You are not authorized to view this page.", http.StatusUnauthorized)
+		http.Redirect(w, r, "/", http.StatusUnauthorized)
 
 		return
 	}
@@ -33,7 +34,7 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 	ssid, _ := r.Cookie("ssid")
 
 	if priv, id, err = db.GetSession(ssid.Value); err != nil {
-		http.Error(w, "Internal server error your gay", http.StatusInternalServerError)
+		http.Error(w, "Internal server error.", http.StatusInternalServerError)
 		log.Println(err.Error())
 
 		return
@@ -41,6 +42,7 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 
 	if priv < 1 || priv > 2 {
 		http.Error(w, "You are not authorized to view this page.", http.StatusUnauthorized)
+		http.Redirect(w, r, "/", http.StatusUnauthorized)
 
 		return
 	}
@@ -80,10 +82,11 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		w.WriteHeader(http.StatusCreated)
+		http.Redirect(w, r, "/", http.StatusCreated)
 	case "GET":
 		if err := Templates.ExecuteTemplate(w, "NewPost", core.ApiInformation{
 			Logged: true,
+			Admin:  true,
 		}); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 
