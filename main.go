@@ -13,7 +13,7 @@ func main() {
 	var err error
 
 	if port = os.Getenv("PORT"); port == "" {
-		log.Println("No PORT environment variable detected. Setting to default 8080.")
+		log.Println("No PORT environment variable detected. Setting to default 3000.")
 
 		port = "3000"
 	}

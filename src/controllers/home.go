@@ -21,13 +21,9 @@ func RenderHome(w http.ResponseWriter, r *http.Request) {
 	if ssid, err := r.Cookie("ssid"); err == nil {
 		priv := 0
 
-		if priv, _, err = db.GetSession(ssid.Value); err != nil {
-			http.Error(w, "Internal server error.", http.StatusInternalServerError)
+		priv, _, _ = db.GetSession(ssid.Value)
 
-			return
-		}
-
-		if priv > 0 && priv < 3 {
+		if priv == core.Admin {
 			api.Admin = true
 		}
 	}
