@@ -59,7 +59,6 @@ func NewPost(w http.ResponseWriter, r *http.Request) {
 
 			return
 		}
-		fmt.Println(data.Content, data)
 
 		if data.Content == "" || data.Title == "" || data.Introduction == "" {
 			http.Error(w, "Missing fields data", http.StatusBadRequest)
